@@ -1,7 +1,7 @@
 # AA272 Final Project
 
 **Course:** AA 272 (Global Positioning Systems)  
-**Quarter/Year:** Winter 2022
+**Quarter/Year:** Winter 2022 
 **School:** Stanford University  
 **Authors:** Joshua Geiser, Matthew Hunter, Tamas Kis 
 
