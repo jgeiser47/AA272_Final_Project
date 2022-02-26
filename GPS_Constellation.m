@@ -33,9 +33,9 @@ classdef GPS_Constellation < handle
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Get 4 pseudoranges at a specified timestep
         % 
-        % Inputs: MJD - one timestep of 'simdata.MJD_GPS'
-        %         ecef_rcv - one timestep of 'simdata.r_ecef'
-        %         bias_rcv - current estimated receiver clock bias [meters]
+        % Inputs: MJD - (scalar) one timestep of 'simdata.MJD_GPS'
+        %         ecef_rcv - (3x1) one timestep of 'simdata.r_ecef'
+        %         bias_rcv - (scalar) current estimated receiver clock bias [meters]
         %
         % Output: 4x1 vector of pseudorange values from 4 closest GPS sats
         function pseudoranges = get_pseudoranges(obj, MJD, ecef_rcv, bias_rcv)
