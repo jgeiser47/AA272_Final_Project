@@ -4,10 +4,10 @@
 %
 %   Kp = t2Kp(MJD_UT1,MJD_UT1_data,Kp_data)
 %
-% See also load_Kp_ap_F107, t2ap.
+% See also load_sw, t2ap.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-15
+% Last Update: 2022-02-19
 %
 %--------------------------------------------------------------------------
 %
@@ -41,7 +41,7 @@
 function Kp_UT1 = t2Kp(MJD_UT1,MJD_UT1_data,Kp_data)
 
     % fraction of day [d]
-    f_DD = MJD_UT1-floor(MJD_UT1);
+    f_DD = mjd2f(MJD_UT1);
 
     % hours [h]
     h = f2hms(f_DD);

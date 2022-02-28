@@ -1,15 +1,17 @@
 %==========================================================================
 %
-% ecef2eci_matrix_approx  Rotation matrix from the ECEF frame to the ECI
-% frame (approximate).
+% ecef2eci_matrix_approx  Rotation matrix from Earth-centered Earth fixed 
+% (ECEF) frame to Earth-centered inertial (ECI) frame (approximate).
 %
-%   R_ecef2eci = ecef2eci_matrix(MJD_UT1)
-%   R_ecef2eci = ecef2eci_matrix(MJD_UT1,'Linear')
-%   R_ecef2eci = ecef2eci_matrix(MJD_UT1,'IAU2006/2000')
-%   R_ecef2eci = ecef2eci_matrix(MJD_UT1,'Vallado')
+%   R_ecef2eci = ecef2eci_matrix_approx(MJD_UT1)
+%   R_ecef2eci = ecef2eci_matrix_approx(MJD_UT1,'Linear')
+%   R_ecef2eci = ecef2eci_matrix_approx(MJD_UT1,'IAU2006/2000')
+%   R_ecef2eci = ecef2eci_matrix_approx(MJD_UT1,'Vallado')
+%
+% See also eci2ecef_matrix_approx, iau06.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-15
+% Last Update: 2022-02-26
 %
 % REFERENCES:
 %   [1] D'Amico, "Earth Rotation and Time Systems", AA 279A Lecture 6 

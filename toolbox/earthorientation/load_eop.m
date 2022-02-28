@@ -7,7 +7,7 @@
 %   eop = load_eop(MJD_UTC0,duration)
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-15
+% Last Update: 2022-02-21
 %
 %--------------------------------------------------------------------------
 %
@@ -35,12 +35,16 @@
 %
 %==========================================================================
 function eop = load_eop(MJD_UTC0,duration)
-    
+
     % loads full data set
     eop = struct2array(load('eop.mat'));
+
+    % determines if inputs are provided
+    MJD_UTC0_input = (nargin >= 1) && ~isempty(MJD_UTC0);
+    duration_input = (nargin == 2) && ~isempty(duration);
     
     % trims data set to only keep relevant data for simulation
-    if nargin ~= 0
+    if MJD_UTC0_input && duration_input
 
         % start and end dates of data to keep (from start to end of sim)
         MJD_start = floor(MJD_UTC0);

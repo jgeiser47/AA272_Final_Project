@@ -5,10 +5,11 @@
 %
 %   rho = harris_priester(r_eci,r_ecef,r_sun_eci)
 %
-% See also exponential, jacchia_roberts, nrlmsise00, nrlmsise00_matlab.
+% See also exponential, jacchia_bowman_2008, jacchia_roberts, nrlmsise00, 
+% nrlmsise00_matlab.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-15
+% Last Update: 2022-02-19
 %
 % REFERENCES:
 %   [1] Cappellari et al., "Mathematical Theory of the Goddard Trajectory 

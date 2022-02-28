@@ -4,10 +4,11 @@
 %
 %   [hh,mm,ss] = f2hms(f_DD)
 %
-% See also cal2doy, cal2mjd, hms2f, jd2mjd, jd2t, mjd2cal, mjd2jd, mjd2t.
+% See also cal2doy, cal2mjd, doy2cal, hms2f, jd2mjd, jd2t, mjd2cal, mjd2f,
+% mjd2jd, mjd2t.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-01
+% Last Update: 2022-02-17
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.,
@@ -30,13 +31,13 @@
 %==========================================================================
 function [hh,mm,ss] = f2hms(f_DD)
     
-    % hours
+    % hours [h]
     hh = floor(24*f_DD);
 
-    % minutes
+    % minutes [m]
     mm = floor(60*(24*f_DD-hh));
 
-    % seconds
+    % seconds [s]
     ss = 3600*(24*f_DD-hh-(mm/60));
     
 end

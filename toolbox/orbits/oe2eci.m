@@ -1,17 +1,22 @@
 %==========================================================================
 %
-% oe2eci  Keplerian orbital elements to ECI position and velocity.
+% oe2eci  ECI position and velocity from Keplerian orbital elements.
 %
 %   [r_eci,v_eci] = oe2eci(a,e,i,Om,w,nu)
+%   [r_eci,v_eci] = oe2eci(a,e,i,0,Pi,nu)
+%   [r_eci,v_eci] = oe2eci(a,e,i,Om,0,u)
+%   [r_eci,v_eci] = oe2eci(a,e,i,0,0,l)
+%
+% See also eci2oe.
 %
 % Author: Tamas Kis
-% Last Update: 2021-08-10
+% Last Update: 2022-02-16
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.,
 %       Algorithm 10 (pp. 118-119)
 %   [2] D'Amico, "Keplerian Orbital Elements, Coordinate Systems", AA 279A 
-%       Lecture 5 Slides, Slide 8
+%       Lecture 5 Slides (p. 8)
 %
 %--------------------------------------------------------------------------
 %
@@ -44,14 +49,11 @@
 %==========================================================================
 function [r_eci,v_eci] = oe2eci(a,e,i,Om,w,nu)
     
-    % Earth gravitational parameter [m^3/s^2]
-    mu_earth = 398600.4415e9;
-    
     % eccentric anomaly [rad]
-    E = mod(2*atan(sqrt((1-e)/(1+e))*tan(nu/2)),2*pi);
+    E = nu2E(nu,e);
     
     % mean motion [rad/s]
-    n = sqrt(mu_earth/a^3);
+    n = a2n(a);
     
     % position [m] and inertial velocity [m/s] resolved in PQW frame
     r_pqw = [a*(cos(E)-e);
@@ -60,19 +62,9 @@ function [r_eci,v_eci] = oe2eci(a,e,i,Om,w,nu)
     v_pqw = ((a*n)/(1-e*cos(E)))*[-sin(E);
                                    sqrt(1-e^2)*cos(E);
                                    0];
-    
-    % precomputes trigonometric functions
-    sO = sin(Om);
-    cO = cos(Om);
-    si = sin(i);
-    ci = cos(i);
-    sw = sin(w);
-    cw = cos(w);
-    
-    % defines rotation matrix
-    R_pqw2eci = [cO*cw-sO*ci*sw   -cO*sw-sO*ci*cw    sO*si;
-                 sO*cw+cO*ci*sw   -sO*sw+cO*ci*cw   -cO*si;
-                 si*sw             si*cw             ci];
+
+    % rotation matrix from PQW frame to ECI frame
+    R_pqw2eci = pqw2eci_matrix(i,Om,w);
     
     % position [m] and inertial velocity [m/s] resolved in ECI frame
     r_eci = R_pqw2eci*r_pqw;

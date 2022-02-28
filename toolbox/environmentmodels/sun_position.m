@@ -2,10 +2,10 @@
 %
 % sun_position  Sun position resolved in the ECI frame.
 %
-%   r_sun_eci = sun_position(MJD_UT1,MJD_TT)
+%   r_sun_eci = sun_position(MJD_UT1,epsilon)
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-01
+% Last Update: 2022-02-20
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.,
@@ -17,7 +17,7 @@
 % INPUT:
 % ------
 %   MJD_UT1     - (1×1 double) UT1 (Universal Time 1) [MJD]
-%   MJD_TT      - (1×1 double) TT (Terrestrial Time) [MJD]
+%   epsilon     - (1×1 double) obliquity of the ecliptic [rad]
 %
 % -------
 % OUTPUT:
@@ -25,11 +25,10 @@
 %   r_sun_eci   - (3×1 double) Sun position resolved in ECI frame [m]
 %
 %==========================================================================
-function r_sun_eci = sun_position(MJD_UT1,MJD_TT)
+function r_sun_eci = sun_position(MJD_UT1,epsilon)
 
-    % Julian centuries since J2000.0 of UT1 and TT [c]
+    % Julian centuries since J2000.0 of UT1 [c]
     T_UT1 = mjd2t(MJD_UT1);
-    T_TT = mjd2t(MJD_TT);
     
     % mean ecliptic longitude and mean anomaly of Sun (in ECI frame) [deg]
     lambda_M_sun = mod(280.460+36000.771*T_UT1,360);
@@ -44,9 +43,6 @@ function r_sun_eci = sun_position(MJD_UT1,MJD_TT)
     
     % converts distance to m
     r_sun_mag = 149597870000*r_sun_mag;
-    
-    % obliquity of the ecliptic [rad]
-    epsilon = obliquity(T_TT);
 
     % converts obliquity to degrees
     epsilon = rad2deg(epsilon);

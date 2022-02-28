@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>drag</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-15"><meta name="DC.source" content="drag_doc.m"><style type="text/css">
+      --><title>drag</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-27"><meta name="DC.source" content="drag_doc.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +67,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1><tt>drag</tt></h1><!--introduction--><p>Perturbing acceleration due to atmospheric drag.</p><p><a href="index.html">Back to Astrodynamics Toolbox Contents</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Input/Output Parameters</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">fD_eci = drag(v_ecef,R_ecef2eci,rho,B)
-</pre><h2 id="2">Description</h2><p><tt>fD_eci = drag(v_ecef,R_ecef2eci,rho,B)</tt> determines the perturbing acceleration due to atmospheric drag resolved in the ECI (<img src="drag_doc_eq10211072324919443730.png" alt="$[\mathbf{f}_{D}]_{\mathrm{ECI}}$" style="width:30px;height:11px;">) given the ECEF velocity resolved in the ECEF frame (<img src="drag_doc_eq12437241715667847023.png" alt="$[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathbf{ECEF}}$" style="width:57px;height:13px;">), the rotation matrix from the ECEF frame to the ECI frame (<img src="drag_doc_eq01790548064305611632.png" alt="$\left[\mathbf{R}_{\mathrm{ECEF}\to\mathrm{ECI}}\right]$" style="width:56px;height:11px;">), the atmospheric density (<img src="drag_doc_eq17454244308657937853.png" alt="$\rho$" style="width:6px;height:8px;">), and the ballistic coefficient (<img src="drag_doc_eq10348488793466917580.png" alt="$B$" style="width:9px;height:8px;">).</p><h2 id="3">Input/Output Parameters</h2><p>
+  </style></head><body><div class="content"><h1><tt>drag</tt></h1><!--introduction--><p>Perturbing acceleration due to atmospheric drag.</p><p><a href="index.html">Back to Astrodynamics Toolbox Contents</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Input/Output Parameters</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">f_D_eci = drag(v_ecef,R_ecef2eci,rho,B)
+</pre><h2 id="2">Description</h2><p><tt>f_D_eci = drag(v_ecef,R_ecef2eci,rho,B)</tt> determines the perturbing acceleration due to atmospheric drag resolved in the ECI (<img src="drag_doc_eq10211072324919443730.png" alt="$[\mathbf{f}_{D}]_{\mathrm{ECI}}$" style="width:30px;height:11px;">) given the ECEF velocity resolved in the ECEF frame (<img src="drag_doc_eq12437241715667847023.png" alt="$[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathbf{ECEF}}$" style="width:57px;height:13px;">), the rotation matrix from the ECEF frame to the ECI frame (<img src="drag_doc_eq01790548064305611632.png" alt="$\left[\mathbf{R}_{\mathrm{ECEF}\to\mathrm{ECI}}\right]$" style="width:56px;height:11px;">), the atmospheric density (<img src="drag_doc_eq17454244308657937853.png" alt="$\rho$" style="width:6px;height:8px;">), and the ballistic coefficient (<img src="drag_doc_eq10348488793466917580.png" alt="$B$" style="width:9px;height:8px;">).</p><h2 id="3">Input/Output Parameters</h2><p>
   <table border=1>
       <tr>
           <td></td>
@@ -109,7 +109,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
       </tr>
       <tr>
           <td rowspan="1" style="text-align:center"><b>Output</b></td>
-          <td style="text-align:center"><TT>fD_eci</TT></td>
+          <td style="text-align:center"><TT>f_D_eci</TT></td>
           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{f}_{D}]_{\mathrm{eci}}" title="" /></td></td>
           <td>perturbing acceleration due to atmospheric drag resolved in the ECI frame</td>
           <td style="text-align:center">3×1<BR>double</td>
@@ -123,9 +123,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 % 
 % <index.html Back to Astrodynamics Toolbox Contents>.
 %% Syntax
-%   fD_eci = drag(v_ecef,R_ecef2eci,rho,B)
+%   f_D_eci = drag(v_ecef,R_ecef2eci,rho,B)
 %% Description
-% |fD_eci = drag(v_ecef,R_ecef2eci,rho,B)| determines the perturbing 
+% |f_D_eci = drag(v_ecef,R_ecef2eci,rho,B)| determines the perturbing 
 % acceleration due to atmospheric drag resolved in the ECI 
 % ($[\mathbf{f}_{D}]_{\mathrm{ECI}}$) given the ECEF velocity resolved in
 % the ECEF frame ($[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathbf{ECEF}}$), the 
@@ -174,7 +174,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %       </tr>
 %       <tr>
 %           <td rowspan="1" style="text-align:center"><b>Output</b></td>
-%           <td style="text-align:center"><TT>fD_eci</TT></td>
+%           <td style="text-align:center"><TT>f_D_eci</TT></td>
 %           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{f}_{D}]_{\mathrm{eci}}" title="" /></td></td>
 %           <td>perturbing acceleration due to atmospheric drag resolved in the ECI frame</td>
 %           <td style="text-align:center">3×1<BR>double</td>

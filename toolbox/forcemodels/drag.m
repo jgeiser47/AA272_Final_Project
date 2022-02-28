@@ -3,7 +3,7 @@
 % drag  Perturbing acceleration due to atmospheric drag resolved in the ECI
 % frame.
 %
-%   fD_eci = drag(v_ecef,R_ecef2eci,rho,B)
+%   f_D_eci = drag(v_ecef,R_ecef2eci,rho,B)
 %
 % Author: Tamas Kis
 % Last Update: 2022-02-01
@@ -26,11 +26,11 @@
 % -------
 % OUTPUT:
 % -------
-%   fD_eci	    - (3×1 double) perturbing acceleration due to atmospheric 
+%   f_D_eci     - (3×1 double) perturbing acceleration due to atmospheric 
 %                 drag resolved in ECI frame [m/s^2]
 %
 %==========================================================================
-function fD_eci = drag(v_ecef,R_ecef2eci,rho,B)
+function f_D_eci = drag(v_ecef,R_ecef2eci,rho,B)
 
     % relative velocity of satellite with respect to the atmosphere, 
     % resolved in the ECEF frame [m/s]
@@ -41,6 +41,6 @@ function fD_eci = drag(v_ecef,R_ecef2eci,rho,B)
     v_rel = R_ecef2eci*v_rel_ecef;
     
     % acceleration due to atmospheric drag [m/s]
-    fD_eci = -0.5*B*rho*inorm(v_rel)*v_rel;
+    f_D_eci = -0.5*B*rho*inorm(v_rel)*v_rel;
 
 end

@@ -4,10 +4,11 @@
 %
 %   rho = exponential(r_ecef)
 %
-% See also harris_priester, jacchia_roberts, nrlmsise00, nrlmsise00_matlab.
+% See also harris_priester, jacchia_bowman_2008, jacchia_roberts,
+% nrlmsise00, nrlmsise00_matlab.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-15
+% Last Update: 2022-02-19
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.

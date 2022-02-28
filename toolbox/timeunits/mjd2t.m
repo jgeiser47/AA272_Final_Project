@@ -2,12 +2,13 @@
 %
 % mjd2t  Julian centuries since J2000.0 from modified Julian date.
 %
-%   T = mjd2t(T)
+%   T = mjd2t(MJD)
 %
-% See also cal2doy, cal2mjd, f2hms, hms2f, jd2mjd, jd2t, mjd2cal, mjd2jd.
+% See also cal2doy, cal2mjd, doy2cal, f2hms, hms2f, jd2mjd, jd2t, mjd2cal,
+% mjd2f, mjd2jd.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-01
+% Last Update: 2022-02-17
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.,

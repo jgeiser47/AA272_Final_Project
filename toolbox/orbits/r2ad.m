@@ -1,11 +1,11 @@
 %==========================================================================
 %
-% r2ad  ECI position to geocentric right ascension and declination.
+% r2ad  Geocentric right ascension and declination from ECI position.
 %
 %   [alpha,delta] = r2ad(r_eci)
 %
 % Author: Tamas Kis
-% Last Update: 2022-01-06
+% Last Update: 2022-02-16
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.

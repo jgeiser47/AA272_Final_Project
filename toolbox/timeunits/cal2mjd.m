@@ -5,10 +5,11 @@
 %   MJD = cal2mjd(cal)
 %   MJD = cal2mjd([YYYY,MM,DD,hh,mm,ss])
 %
-% See also cal2doy, f2hms, hms2f, jd2mjd, jd2t, mjd2cal, mjd2jd, mjd2t.
+% See also cal2doy, doy2cal, f2hms, hms2f, jd2mjd, jd2t, mjd2cal, mjd2f, 
+% mjd2jd, mjd2t.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-01
+% Last Update: 2022-02-17
 %
 % REFERENCES:
 %   [1] Montenbruck and Gill, "Satellite Orbits", 4th Ed., Appendix A.1.1 
@@ -39,10 +40,10 @@ function MJD = cal2mjd(cal)
     mm = cal(5);
     ss = cal(6);
     
-    % converts time to fraction of a day
+    % converts time to fraction of a day [d]
     f_DD = hms2f(hh,mm,ss);
     
-    % appends time to day
+    % appends time to day [d]
     DD = DD+f_DD;
     
     % handles leap years
@@ -91,7 +92,7 @@ function MJD = cal2mjd(cal)
         error('Calendar date does not exist in Gregorian calendar.');
     end
     
-    % modified Julian date
+    % modified Julian date [MJD]
     MJD = 365*y-679004+B+floor(30.6001*(m+1))+DD;
     
 end

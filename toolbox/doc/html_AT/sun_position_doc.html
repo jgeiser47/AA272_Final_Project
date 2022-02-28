@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>sun_position</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-15"><meta name="DC.source" content="sun_position_doc.m"><style type="text/css">
+      --><title>sun_position</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-27"><meta name="DC.source" content="sun_position_doc.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +67,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1><tt>sun_position</tt></h1><!--introduction--><p>Sun position resolved in the ECI frame.</p><p><a href="index.html">Back to Astrodynamics Toolbox Contents</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Input/Output Parameters</a></li><li><a href="#4">See also</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">r_sun_eci = sun_position(MJD_UT1,MJD_TT)
-</pre><h2 id="2">Description</h2><p><tt>r_sun_eci = sun_position(MJD_UT1,MJD_TT)</tt> determines the Sun position resolved in the ECI frame, <img src="sun_position_doc_eq16513336129505276234.png" alt="$[\mathbf{r}_{\odot}]_{\mathrm{eci}}$" style="width:26px;height:11px;">, given the modified Julian dates of UT1 (Universal Time 1, <img src="sun_position_doc_eq11095008563007067201.png" alt="$\mathrm{MJD}_{\mathrm{UT1}}$" style="width:39px;height:10px;">) and TT (Terrestrial Time, <img src="sun_position_doc_eq10737617481260157072.png" alt="$\mathrm{MJD}_{\mathrm{TT}}$" style="width:35px;height:10px;">).</p><h2 id="3">Input/Output Parameters</h2><p>
+  </style></head><body><div class="content"><h1><tt>sun_position</tt></h1><!--introduction--><p>Sun position resolved in the ECI frame.</p><p><a href="index.html">Back to Astrodynamics Toolbox Contents</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Input/Output Parameters</a></li><li><a href="#4">See also</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">r_sun_eci = sun_position(MJD_UT1,obliquity)
+</pre><h2 id="2">Description</h2><p><tt>r_sun_eci = sun_position(MJD_UT1,MJD_TT)</tt> determines the Sun position resolved in the ECI frame, <img src="sun_position_doc_eq16513336129505276234.png" alt="$[\mathbf{r}_{\odot}]_{\mathrm{eci}}$" style="width:26px;height:11px;">, given the modified Julian date of UT1 (Universal Time 1), <img src="sun_position_doc_eq11095008563007067201.png" alt="$\mathrm{MJD}_{\mathrm{UT1}}$" style="width:39px;height:10px;">, and the obliquity of the ecliptic, <img src="sun_position_doc_eq13794615980392037191.png" alt="$\varepsilon$" style="width:5px;height:6px;">.</p><h2 id="3">Input/Output Parameters</h2><p>
   <table border=1>
       <tr>
           <td></td>
@@ -87,11 +87,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
           <td style="text-align:center">MJD</td>
       </tr>
       <tr>
-          <td style="text-align:center"><TT>MJD_TT</TT></td>
-          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{MJD}_{\mathrm{TT}}" title="" /></td>
-          <td>UT1 (Terrestrial Time)</td>
+          <td style="text-align:center"><TT>epsilon</TT></td>
+          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\varepsilon" title="" /></td>
+          <td>obliquity of the ecliptic</td>
           <td style="text-align:center">1×1<BR>double</td>
-          <td style="text-align:center">MJD</td>
+          <td style="text-align:center">rad</td>
       </tr>
       <tr>
           <td rowspan="1" style="text-align:center"><b>Output</b></td>
@@ -102,20 +102,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
           <td style="text-align:center">m</td>
       </tr>
   </table>
-</p><h2 id="4">See also</h2><p><a href="eclipse_doc.html"><tt>eclipse</tt></a> | <a href="moon_position_doc.html"><tt>moon_position</tt></a> | <a href="obliquity_doc.html"><tt>obliquity</tt></a> | <a href="sun_position_doc.html"><tt>sun_position</tt></a></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+</p><h2 id="4">See also</h2><p><a href="eclipse_doc.html"><tt>eclipse</tt></a> | <a href="moon_position_doc.html"><tt>moon_position</tt></a> | <a href="obliquity_doc.html"><tt>obliquity</tt></a></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% |sun_position|
 % Sun position resolved in the ECI frame.
 % 
 % <index.html Back to Astrodynamics Toolbox Contents>.
 %% Syntax
-%   r_sun_eci = sun_position(MJD_UT1,MJD_TT)
+%   r_sun_eci = sun_position(MJD_UT1,obliquity)
 %% Description
 % |r_sun_eci = sun_position(MJD_UT1,MJD_TT)| determines the Sun position
 % resolved in the ECI frame, $[\mathbf{r}_{\odot}]_{\mathrm{eci}}$, given 
-% the modified Julian dates of UT1 (Universal Time 1, 
-% $\mathrm{MJD}_{\mathrm{UT1}}$) and TT (Terrestrial Time, 
-% $\mathrm{MJD}_{\mathrm{TT}}$).
+% the modified Julian date of UT1 (Universal Time 1), 
+% $\mathrm{MJD}_{\mathrm{UT1}}$, and the obliquity of the ecliptic,
+% $\varepsilon$.
 %% Input/Output Parameters
 % <html>
 %   <table border=1>
@@ -136,11 +136,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %           <td style="text-align:center">MJD</td>
 %       </tr>
 %       <tr>
-%           <td style="text-align:center"><TT>MJD_TT</TT></td>
-%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{MJD}_{\mathrm{TT}}" title="" /></td>
-%           <td>UT1 (Terrestrial Time)</td>
+%           <td style="text-align:center"><TT>epsilon</TT></td>
+%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\varepsilon" title="" /></td>
+%           <td>obliquity of the ecliptic</td>
 %           <td style="text-align:center">1×1<BR>double</td>
-%           <td style="text-align:center">MJD</td>
+%           <td style="text-align:center">rad</td>
 %       </tr>
 %       <tr>
 %           <td rowspan="1" style="text-align:center"><b>Output</b></td>
@@ -155,7 +155,6 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %% See also
 % <eclipse_doc.html |eclipse|> | 
 % <moon_position_doc.html |moon_position|> | 
-% <obliquity_doc.html |obliquity|> | 
-% <sun_position_doc.html |sun_position|>
+% <obliquity_doc.html |obliquity|>
 ##### SOURCE END #####
 --></body></html>

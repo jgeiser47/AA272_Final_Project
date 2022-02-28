@@ -5,8 +5,10 @@
 %
 %   R_pqw2rtn = pqw2rtn_matrix(nu)
 %
+% See also rtn2pqw_matrix.
+%
 % Author: Tamas Kis
-% Last Update: 2022-01-06
+% Last Update: 2022-02-16
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.

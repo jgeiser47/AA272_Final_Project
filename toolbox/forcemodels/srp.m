@@ -2,10 +2,10 @@
 %
 % srp  Perturbing acceleration due to solar radiation pressure.
 %
-%   f_srp = srp(r,r_sun,CR,Asrp,M)
+%   f_srp = srp(r,r_sun,CR,Asrp,m)
 %
 % Author: Tamas Kis
-% Last Update: 2022-01-24
+% Last Update: 2022-02-25
 %
 % REFERENCES:
 %   [1] Montenbruck and Gill, "Satellite Orbits", Eq. (3.75) (p. 79)
@@ -21,7 +21,7 @@
 %   r_sun   - (3×1 double) Sun position [m]
 %   CR      - (1×1 double) coefficient of reflectivity
 %   Asrp    - (1×1 double) SRP reference area [m^2]
-%   M       - (1×1 double) satellite mass [kg]
+%   m       - (1×1 double) satellite mass [kg]
 %
 % -------
 % OUTPUT:
@@ -35,7 +35,7 @@
 %   --> "r" and "r_sun" must be resolved in the same coordinate frame.
 %
 %==========================================================================
-function f_srp = srp(r,r_sun,CR,Asrp,M)
+function f_srp = srp(r,r_sun,CR,Asrp,m)
 
     % solar radiation pressure [N/m^2]
     P_srp = P_SRP;
@@ -50,7 +50,7 @@ function f_srp = srp(r,r_sun,CR,Asrp,M)
     if in_eclipse
         f_srp = zeros(3,1);
     else
-        f_srp = (P_srp*CR*Asrp/M)*(r_rel/inorm(r_rel));
+        f_srp = (P_srp*CR*Asrp/m)*(r_rel/inorm(r_rel));
     end
 
 end

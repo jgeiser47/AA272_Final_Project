@@ -5,24 +5,27 @@
 %
 %   [rho,n,T] = nrlmsise00_matlab(r_ecef,MJD_UT1,F107_avg,F107,ap_array)
 %
-% See also exponential, harris_priester, jacchia_roberts, nrlmsise00.
+% See also exponential, harris_priester, jacchia_bowman_2008, 
+% jacchia_roberts, nrlmsise00, space_weather.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-15
+% Last Update: 2022-02-19
 %
 % REFERENCES:
-%   [1] https://www.mathworks.com/help/aerotbx/ug/atmosnrlmsise00.html
+%   [1] Picone et al., "NRLMSISE-00 empirical model of the atmosphere: 
+%       Statistical comparisons and scientific issues"
+%   [2] https://www.mathworks.com/help/aerotbx/ug/atmosnrlmsise00.html
 %
 %--------------------------------------------------------------------------
 %
 % ------
 % INPUT:
 % ------
-%   r_ecef      - (3×1 double) satellite position resolved in ECEF frame
-%                 [m]
+%   r_ecef      - (3×1 double) position resolved in ECEF frame [m]
 %   MJD_UT1     - (1×1 double) UT1 (Universal Time 1) [MJD]
-%   F107_avg    - (1×1 double) centered 81-day average of F10.7 [SFU]
-%   F107        - (1×1 double) 10.7 cm solar flux for previous day [SFU]
+%   F107_avg    - (1×1 double) centered 81-day average of F10.7 (1-day lag)
+%                 [SFU]
+%   F107        - (1×1 double) 10.7 cm solar flux (1-day lag) [SFU]
 %   ap_array    - (1×1 double) array of planetary amplitude values [γ]
 %                   1. daily planetary amplitude [γ]
 %                   2. planetary amplitude (current time) [γ]
@@ -44,7 +47,7 @@
 %       • nO    - (1×1 double) atomic oxygen number density [m^-3]
 %       • nO2   - (1×1 double) diatomic oxygen number density [m^-3]
 %   T           - (1×1 struct) temperatures [K]
-%       • T     - (1×1 double) temperature at altitude [K]
+%       • T_h   - (1×1 double) temperature at altitude [K]
 %       • T_inf - (1×1 double) exospheric temperature [K]
 %
 %==========================================================================
@@ -96,7 +99,7 @@ function [rho,n,T] = nrlmsise00_matlab(r_ecef,MJD_UT1,F107_avg,F107,...
     T_inf = T(1);
 
     % temperature at altitude [K]
-    Th = T(2);
+    T_h = T(2);
 
     % ----------------
     % Parsing outputs.
@@ -106,7 +109,7 @@ function [rho,n,T] = nrlmsise00_matlab(r_ecef,MJD_UT1,F107_avg,F107,...
     clear T;
     
     % temperatures [K]
-    T.T = Th;
+    T.T_h = T_h;
     T.T_inf = T_inf;
 
     % number densities [m^-3]

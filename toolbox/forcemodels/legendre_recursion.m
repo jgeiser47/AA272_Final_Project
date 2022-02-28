@@ -32,19 +32,24 @@
 %==========================================================================
 function [V,W] = legendre_recursion(r_ecef,R,N)
     
-    % magnitude of r_ecef squared
+    % magnitude of ECEF position squared [m^2]
     r_sqr = idot(r_ecef,r_ecef);
 
-    % TODO
-    r_frac = R*R/r_sqr;
-    
-    % extracts position components
-    x = R*r_ecef(1)/r_sqr;
-    y = R*r_ecef(2)/r_sqr;
-    z = R*r_ecef(3)/r_sqr;
-
     % distance from center of the Earth [m]
-    r = inorm(r_ecef);
+    r = sqrt(r_sqr);
+
+    % auxiliary parameter
+    a = R*R/r_sqr;
+    
+    % extract ECEF position components [m]
+    rX = r_ecef(1);
+    rY = r_ecef(2);
+    rZ = r_ecef(3);
+
+    % "normalized" ECEF position components
+    x = R*rX/r_sqr;
+    y = R*rY/r_sqr;
+    z = R*rZ/r_sqr;
 
     % initialize V and W
     V = zeros(N+2,N+2);
@@ -63,7 +68,7 @@ function [V,W] = legendre_recursion(r_ecef,R,N)
         ni = n+1;
         
         % coefficients
-        V(ni,1) = ((2*n-1)*z*V(ni-1,1)-(n-1)*r_frac*V(ni-2,1))/n;
+        V(ni,1) = (z*(2*n-1)*V(ni-1,1)-a*(n-1)*V(ni-2,1))/n;
 
     end
 
@@ -84,9 +89,9 @@ function [V,W] = legendre_recursion(r_ecef,R,N)
             ni = n+1;
             
             % coefficients
-            V(ni,mi) = ((2*n-1)*z*V(ni-1,mi)-(ni+mi-1)*r_frac*V(ni-2,...
+            V(ni,mi) = (z*(2*n-1)*V(ni-1,mi)-a*(ni+mi-1)*V(ni-2,...
                 mi))/(n-m);
-            W(ni,mi) = ((2*n-1)*z*W(ni-1,mi)-(ni+mi-1)*r_frac*W(ni-2,...
+            W(ni,mi) = (z*(2*n-1)*W(ni-1,mi)-a*(ni+mi-1)*W(ni-2,...
                 mi))/(n-m);
 
         end

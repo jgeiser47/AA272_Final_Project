@@ -4,8 +4,10 @@
 %
 %   [r_ecef,v_ecef] = eci2ecef(r_eci,v_eci,w_eci,R_eci2ecef)
 %
+% See also ecef2eci.
+%
 % Author: Tamas Kis
-% Last Update: 2022-01-25
+% Last Update: 2022-02-26
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.
@@ -32,7 +34,8 @@
 % NOTE:
 % -----
 %   --> "r_eci" and "v_eci" can be input in any units, but they MUST be 
-%       consistent. "r_ecef" and "v_ecef" will be output in the same units.
+%       consistent. The units of "r_ecef" will match those of "r_eci", and 
+%       the units of "v_ecef" will match those of "v_eci".
 %   --> By definition, the angular velocity of the Earth is defined as the
 %       angular velocity of the ECEF frame with respect to the ECI frame.
 %

@@ -2,43 +2,121 @@
 %
 % newton_propagator  Time derivative of a satellite's ECI state vector.
 %
-%   [dXdt,extra] = newton_propagator(t,x,prop,sat)
+%   [dXdt,extra] = newton_propagator(t,X,prop,sat)
+%
+% See also initialize_propagator.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-07
+% Last Update: 2022-02-21
 %
 %--------------------------------------------------------------------------
 %
 % ------
 % INPUT:
 % ------
-%   t           - (1×1 double) simulation time [s]
-%   x           - (6×1 double) orbital state vector
-%                   --> (1-3): r_eci - position resolved in ECI frame [m]
-%                   --> (4-6): v_eci - inertial velocity resolved in ECI
-%                                      frame [m/s]
-%   prop        - (struct) propagator settings
-%   sat  - (struct) satellite parameters
-%               
+%   t       - (1×1 double) simulation time [s]
+%   X       - (6×1 double) orbital state vector
+%               --> 1-3. r_eci - position resolved in ECI frame [m]
+%               --> 4-6. v_eci - inertial velocity resolved in ECI frame 
+%                                [m/s]
+%   prop    - (1×1 struct) propagator settings (see initialize_propagator
+%             function for full definition)
+%   sat     - (1×1 struct) satellite parameters TODO     
 %
 % -------
 % OUTPUT:
 % -------
-%   dx	        - (6×1 double) orbital state vector derivative
-%                   --> (1-3): v_eci - inertial velocity resolved in ECI
-%                                      frame [m/s]
-%                   --> (4-6): a_eci - inertial acceleration resolved in
-%                                      ECI frame [m/s^2]
-%   extra       - (struct) extra parameters to return
-%       • a_eci    - (3×1 double) inertial acceleration resolved in ECI 
-%                    frame [m/s^2]
-%       • r_ecef   - (3×1 double) position resolved in ECEF frame [m]
-%       • v_ecef   - (3×1 double) ECEF velocity resolved in ECEF frame 
-%                    [m/s]
-%       • lat      - (1×1 double) geodetic latitude [deg]
-%       • lon      - (1×1 double) geodetic longitude [deg]
-%       • h        - (1×1 double) geodetic altitude [deg]
-%       • rho      - (1×1 double) atmospheric density [kg/m^3]
+%   dXdt    - (6×1 double) orbital state vector derivative
+%               --> 1-3. v_eci - inertial velocity resolved in ECI frame
+%                                [m/s]
+%               --> 4-6. a_eci - inertial acceleration resolved in ECI
+%                                frame [m/s^2]
+%   extra   - (1×1 struct) extra parameters to return
+%       • a_eci      - (3×1 double) inertial acceleration resolved in ECI 
+%                      frame [m/s^2]
+%       • r_ecef     - (3×1 double) position resolved in ECEF frame [m]
+%       • v_ecef     - (3×1 double) ECEF velocity resolved in ECEF frame 
+%                      [m/s]
+%       • lat        - (1×1 double) geodetic latitude [deg]
+%       • lon        - (1×1 double) geodetic longitude [deg]
+%       • h          - (1×1 double) geodetic altitude [deg]
+%       • xp         - (1×1 double) polar coordinate of the CIP ['']
+%       • yp         - (1×1 double) polar coordinate of the CIP ['']
+%       • dX         - (1×1 double) correction term for X [mas]
+%       • dY         - (1×1 double) correction term for Y [mas]
+%       • LOD        - (1×1 double) length of day [ms]
+%       • R_ecef2eci - (3×3 double) rotation matrix (ECEF --> ECI) [-]
+%       • R_eci2ecef - (3×3 double) rotation matrix (ECI --> ECEF) [-]
+%       • w_eci      - (3×1 double) Earth angular velocity resolved in ECI
+%                      frame [rad/s]
+%       • Q          - (3×3 double) precession-nutation matrix (CIRS --> 
+%                      GCRF) [-]
+%       • R          - (3×3 double) sidereal-rotation matrix (TIRS --> 
+%                      CIRS) [-]
+%       • W          - (3×3 double) polar-motion matrix (ITRF --> TIRS) [-]
+%       • epsilon    - (1×1 double) obliquity of the ecliptic [rad]
+%       • r_sun_eci  - (1×1 double) Sun position resolved in ECI frame [m]
+%       • r_moon_eci - (1×1 double) Moon position resolved in ECI frame [m]
+%       • in_eclipse - (1×1 logical) true if satellite is in eclipse, false
+%                      otherwise
+%       • ap_array   - (1×7 double) planetary amplitude array for
+%                      NRLMSISE-00 atmospheric model
+%           ‣ 1. Ap       - daily planetary amplitude (current day - no 
+%                           lag) [γ]
+%           ‣ 2. ap       - planetary amplitude (current time) [γ]
+%           ‣ 3. ap3      - planetary amplitude (3 hours before) [γ]
+%           ‣ 4. ap6      - planetary amplitude (6 hours before) [γ]
+%           ‣ 5. ap9      - planetary amplitude (9 hours before) [γ]
+%           ‣ 6. ap_12_33 - planetary amplitude (average of 12-33 hours 
+%                           before) [γ]
+%           ‣ 7. ap_36_57 - planetary amplitude (average of 36-57 hours 
+%                           before) [γ]
+%       • dTc        - (1×1 double) temperature change derived from Dst 
+%                      index for current time [K]
+%       • F107       - (1×1 double) daily 10.7 cm solar flux (1-day lag)
+%                      [SFU]
+%       • F107_avg   - (1×1 double) centered 81-day average of F10.7 (1-day
+%                      lag) [SFU]
+%       • Kp         - (1×1 double) planetary index (3-hour lag) [-]
+%       • M107       - (1×1 double) daily Mg II index (2-day lag) [SFU]
+%       • M107_avg   - (1×1 double) centered 81-day average of M10.7 (2-day
+%                      lag) [SFU]
+%       • S107       - (1×1 double) daily 26-34 nm EUV index (1-day lag) 
+%                      [SFU]
+%       • S107_avg   - (1×1 double) centered 81-day average of S10.7 (1-day
+%                      lag) [SFU]
+%       • Y107       - (1×1 double) daily solar X-ray and Lyman-α emission 
+%                      mixed index (5-day lag) [SFU]
+%       • Y107_avg   - (1×1 double) centered 81-day average of Y10.7 (5-day
+%                      lag) [SFU]
+%       • rho        - (1×1 double) atmospheric density [kg/m^3]
+%       • nAr        - (1×1 double) atomic argon number density [m^-3]
+%       • nH         - (1×1 double) atomic hydrogen number density [m^-3]
+%       • nHe        - (1×1 double) atomic helium number density [m^-3]
+%       • nN2        - (1×1 double) diatomic nitrogen number density [m^-3]
+%       • nO         - (1×1 double) atomic oxygen number density [m^-3]
+%       • nO2        - (1×1 double) diatomic oxygen number density [m^-3]
+%       • T_h        - (1×1 double) temperature at altitude [K]
+%       • T_inf      - (1×1 double) exospheric temperature [K]
+%       • g_eci      - (1×1 double) acceleration due to gravity resolved
+%                      in ECI frame [m/s^2]
+%       • f_D_eci    - (1×1 double) perturbing acceleration due to 
+%                      atmospheric drag resolved in ECI frame [m/s^2]
+%       • f_srp_eci  - (1×1 double) perturbing acceleration due to solar 
+%                      radiation  pressure resolved in ECI frame [m/s^2]
+%       • f_moon_eci - (1×1 double) perturbing acceleration due to 3rd-body
+%                      gravity from Moon resolved in ECI frame [m/s^2]
+%       • f_sun_eci  - (1×1 double) perturbing acceleration due to 3rd-body
+%                      gravity from Sun resolved in ECI frame [m/s^2]
+%       • f_rel_eci  - (1×1 double) acceleration due to relativistic
+%                      effects resolved in ECI frame [m/s^2]
+%       • MJD_GPS    - (1×1 double) GPS time [MJD]
+%       • MJD_TAI    - (1×1 double) UTC (International Atomic Time) [MJD]
+%       • MJD_TT     - (1×1 double) TT (Terrestrial Time) [MJD]
+%       • MJD_UT1    - (1×1 double) UT1 (Universal Time 1) [MJD]
+%       • MJD_UTC    - (1×1 double) UTC (Universal Coordinated Time) [MJD]
+%       • cal_UTC    - (1×6 double) UTC (Universal Coordinated Time)
+%                      [y,mo,d,h,m,s]
 %
 %==========================================================================
 function [dXdt,extra] = newton_propagator(t,X,prop,sat)
@@ -60,70 +138,109 @@ function [dXdt,extra] = newton_propagator(t,X,prop,sat)
     cal_UTC = mjd2cal(MJD_UTC);
 
     % Earth orientation parameters for IAU2006/2000 CIO based theory
-    [dX,dY,xp,yp,LOD] = eop_iau06(MJD_UT1,prop.data.eop);
+    [xp,yp,dX,dY,LOD] = eop_iau06(MJD_UT1,prop.data.eop);
 
-    % rotation matrix (GCRF --> ITRF) and Earth angular velocity resolved
-    % in the ITRF [rad/s] from IAU2006/2000 CIO based theory
-    [R_ecef2eci,R_eci2ecef,w_eci] = iau06(MJD_UT1,MJD_TT,xp,yp,dX,dY,...
-        LOD,prop.data.XYs_iau06);
+    % rotation matrices and Earth angular velocity from IAU2006/2000 CIO 
+    % based theory
+    [R_ecef2eci,R_eci2ecef,w_eci,Q,R,W] = iau06(MJD_UT1,MJD_TT,xp,yp,dX,...
+        dY,LOD,prop.data.XYs_iau06);
     
     % ----------------------------
     % Other state representations.
     % ----------------------------
 
-    % ECEF position [m] and velocity [m/s]
+    % position [m] and ECEF velocity [m/s] resolved in ECEF frame
     [r_ecef,v_ecef] = eci2ecef(r_eci,v_eci,w_eci,R_eci2ecef);
     
-    % geodetic latitude [rad], longitude [rad], and altitude [m]
+    % geodetic latitude [°], longitude [°], and altitude [m]
     [lat,lon,h] = ecef2geod(r_ecef);
 
     % ------------
     % Environment.
     % ------------
 
+    % obliquity of the ecliptic [rad]
+    epsilon = obliquity(MJD_TT);
+
+    % Moon position resolved in ECI frame [m]
+    r_moon_eci = moon_position(MJD_UT1,epsilon);
+
     % Sun position resolved in ECI frame [m]
-    r_sun_eci = sun_position(MJD_UT1,MJD_TT);
+    r_sun_eci = sun_position(MJD_UT1,epsilon);
 
     % determines if satellite is in eclipse
     in_eclipse = eclipse(r_eci,r_sun_eci);
 
-    % atmospheric density [kg/m^3]
-    if strcmpi(prop.models.density,'Harris-Priester')
-        rho = density_harris_priester(r_eci,r_ecef,r_sun_eci);
-    elseif strcmpi(prop.models.density,'Exponential')
-        rho = density_exponential(r_ecef);
+    % space weather parameters
+    sw = space_weather(MJD_UT1,prop.data.sw1,prop.data.sw2,...
+        prop.models.density);
+
+    % atmospheric density [kg/m^3], number densities [m^-3], and
+    % temperatures [K]
+    if strcmpi(prop.models.density,'Exponential')
+        rho = exponential(r_ecef);
+        n = struct('nAr',NaN,'nH',NaN,'nHe',NaN,'nN2',NaN,'nO',NaN,...
+            'nO2',NaN);
+        T = struct('T_h',NaN,'T_inf',NaN);
+    elseif strcmpi(prop.models.density,'Harris-Priester')
+        rho = harris_priester(r_eci,r_ecef,r_sun_eci);
+        n = struct('nAr',NaN,'nH',NaN,'nHe',NaN,'nN2',NaN,'nO',NaN,...
+            'nO2',NaN);
+        T = struct('T_h',NaN,'T_inf',NaN);
+    elseif strcmpi(prop.models.density,'Jacchia-Bowman 2008')
+        [rho,T] = jacchia_bowman_2008(r_ecef,r_sun_eci,MJD_UT1,sw.F107,...
+            sw.F107_avg,sw.S107,sw.S107_avg,sw.M107,sw.M107_avg,sw.Y107,...
+            sw.Y107_avg,sw.dTc);
+        n = struct('nAr',NaN,'nH',NaN,'nHe',NaN,'nN2',NaN,'nO',NaN,...
+            'nO2',NaN);
     elseif strcmpi(prop.models.density,'Jacchia-Roberts')
-        rho = density_jacchia_roberts(r_eci,r_ecef,r_sun_eci,...
-            R_eci2ecef,MJD_TT);
+        [rho,n,T] = jacchia_roberts(r_eci,r_ecef,r_sun_eci,R_eci2ecef,...
+            MJD_TT);
+    elseif strcmpi(prop.models.density,'NRLMSISE-00')
+        [rho,n,T] = nrlmsise00(r_ecef,MJD_UT1,sw.F107_avg,sw.F107,...
+            sw.ap_array,prop.data.nrlm_data);
+    elseif strcmpi(prop.models.density,'NRLMSISE-00 (MATLAB)')
+        [rho,n,T] = nrlmsise00_matlab(r_ecef,MJD_UT1,sw.F107_avg,...
+            sw.F107,sw.ap_array);
     end
 
-    % --------------
-    % Accelerations.
-    % --------------
+    % ------------------------------------------
+    % Accelerations (all resolved in ECI frame).
+    % ------------------------------------------
 
-    % acceleration due to gravity resolved in ECI frame [m/s^2]
-    g_eci = R_ecef2eci*gravity(r_ecef,prop.models.grav_mu,...
-        prop.models.grav_R,prop.data.C,prop.data.S,prop.models.grav_N);
-    %g_eci = -(MU_EARTH/inorm(r_eci)^3)*r_eci+R_ecef2eci*J2_ecef(r_ecef);
+    % acceleration due to gravity [m/s^2]
+    g_eci = R_ecef2eci*gravity(r_ecef,prop.data.C,prop.data.S,...
+        prop.models.grav_N);
 
-    % perturbing acceleration due to atmospheric drag resolved in ECI frame
-    % [m/s^2]
+    % perturbing acceleration due to atmospheric drag [m/s^2]
     if prop.perturb.drag
-        fD_eci = drag(v_ecef,R_ecef2eci,rho,sat.B);
+        f_D_eci = drag(v_ecef,R_ecef2eci,rho,sat.B);
     else
-        fD_eci = [0;0;0];
+        f_D_eci = [0;0;0];
     end
     
-    % perturbing acceleration due to solar radiation pressure resolved
-    % in ECI frame[m/s^2]
+    % perturbing acceleration due to solar radiation pressure [m/s^2]
     if prop.perturb.srp && ~in_eclipse
-        f_srp_eci = srp(r_eci,r_sun_eci,sat.CR,sat.Asrp,sat.M);
+        f_srp_eci = srp(r_eci,r_sun_eci,sat.CR,sat.Asrp,sat.m);
     else
         f_srp_eci = [0;0;0];
     end
     
-    % perturbing acceleration due to general relativity resolved in ECI
-    % frame
+    % perturbing acceleration due to 3rd-body gravity from the Moon [m/s^2]
+    if prop.perturb.moon
+        f_moon_eci = third_body(r_eci,r_moon_eci,MU_MOON);
+    else
+        f_moon_eci = [0;0;0];
+    end
+
+    % perturbing acceleration due to 3rd-body gravity from the Sun [m/s^2]
+    if prop.perturb.sun
+        f_sun_eci = third_body(r_eci,r_sun_eci,MU_SUN);
+    else
+        f_sun_eci = [0;0;0];
+    end
+
+    % perturbing acceleration due to general relativity [m/s^2]
     if prop.perturb.relativity
         f_rel_eci = relativity(r_eci,v_eci);
     else
@@ -131,7 +248,7 @@ function [dXdt,extra] = newton_propagator(t,X,prop,sat)
     end
 
     % total inertial acceleration resolved in ECI frame [m/s^2]
-    a_eci = g_eci+fD_eci+f_srp_eci+f_rel_eci;
+    a_eci = g_eci+f_D_eci+f_srp_eci+f_moon_eci+f_sun_eci+f_rel_eci;
     
     % ------------------------
     % State vector derivative.
@@ -143,6 +260,7 @@ function [dXdt,extra] = newton_propagator(t,X,prop,sat)
     % Storing extra parameters.
     % -------------------------
 
+    % state
     extra.a_eci = a_eci;
     extra.r_ecef = r_ecef;
     extra.v_ecef = v_ecef;
@@ -150,15 +268,56 @@ function [dXdt,extra] = newton_propagator(t,X,prop,sat)
     extra.lon = lon;
     extra.h = h;
 
-    extra.rho = rho;
-    extra.in_eclipse = in_eclipse;
+    % Earth orientation parameters
+    extra.xp = xp;
+    extra.yp = yp;
+    extra.dX = dX;
+    extra.dY = dY;
+    extra.LOD = LOD;
+
+    % Earth orientation
+    extra.R_ecef2eci = R_ecef2eci;
+    extra.R_eci2ecef = R_eci2ecef;
+    extra.w_eci = w_eci;
+    extra.Q = Q;
+    extra.R = R;
+    extra.W = W;
+
+    % environment
+    extra.epsilon = epsilon;
+    extra.r_moon_eci = r_moon_eci;
     extra.r_sun_eci = r_sun_eci;
-
-    extra.fD_eci = fD_eci;
-    extra.f_srp_eci = f_srp_eci;
-    extra.f_rel_eci = f_rel_eci;
+    extra.in_eclipse = in_eclipse;
+    extra.ap_array = sw.ap_array;
+    extra.dTc = sw.dTc;
+    extra.F107 = sw.F107;
+    extra.F107_avg = sw.F107_avg;
+    extra.Kp = sw.Kp;
+    extra.M107 = sw.M107;
+    extra.M107_avg = sw.M107_avg;
+    extra.S107 = sw.S107;
+    extra.S107_avg = sw.S107_avg;
+    extra.Y107 = sw.Y107;
+    extra.Y107_avg = sw.Y107_avg;
+    extra.rho = rho;
+    extra.nAr = n.nAr;
+    extra.nH = n.nH;
+    extra.nHe = n.nHe;
+    extra.nN2 = n.nN2;
+    extra.nO = n.nO;
+    extra.nO2 = n.nO2;
+    extra.T_h = T.T_h;
+    extra.T_inf = T.T_inf;
+    
+    % forces and perturbations
     extra.g_eci = g_eci;
+    extra.f_D_eci = f_D_eci;
+    extra.f_srp_eci = f_srp_eci;
+    extra.f_moon_eci = f_moon_eci;
+    extra.f_sun_eci = f_sun_eci;
+    extra.f_rel_eci = f_rel_eci;
 
+    % time
     extra.MJD_GPS = MJD_GPS;
     extra.MJD_TAI = MJD_TAI;
     extra.MJD_TT = MJD_TT;

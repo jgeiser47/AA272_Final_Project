@@ -63,7 +63,8 @@ function [left,right] = interval_search(x,xq,warnings)
         right = 2;
         if warnings
             warning(strcat('Query point "xq" out of bounds -- less',...
-                ' than smallest data in search space "x".'));
+                ' than smallest data in search space "x". "left" and',...
+                ' "right" are returned as "1" and "2", respectively.'));
         end
         return;
     end
@@ -74,7 +75,9 @@ function [left,right] = interval_search(x,xq,warnings)
         right = length(x);
         if warnings
             warning(strcat('Query point "xq" out of bounds -- greater',...
-                ' than largest data in search space "x".'));
+                ' than largest data in search space "x". "left" and',...
+                ' "right" are returned as "n-1" and "n", respectively,',...
+                ' where "n" is the length of the data set.'));
         end
         return;
     end
@@ -102,8 +105,8 @@ function [left,right] = interval_search(x,xq,warnings)
     end
     
     % "left" needs to be decremented by 1 unless it is equal to "xq"
-    if x(left) ~= xq
+    if (x(left) ~= xq) && (left ~= 1)
         left = left-1;
     end
-
+    
 end

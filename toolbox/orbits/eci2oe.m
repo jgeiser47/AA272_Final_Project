@@ -1,12 +1,14 @@
 %==========================================================================
 %
-% eci2oe  ECI position and velocity to Keplerian orbital elements.
+% eci2oe  Keplerian orbital elements from ECI position and velocity.
 %
 %   [a,e,i,Om,w,nu] = eci2oe(r,v)
 %   [a,e,i,Om,w,nu,ang] = eci2oe(r,v)
 %
+% See also oe2eci.
+%
 % Author: Tamas Kis
-% Last Update: 2021-08-11
+% Last Update: 2022-02-16
 %
 %--------------------------------------------------------------------------
 %
@@ -34,26 +36,26 @@
 function [a,e,i,Om,w,nu,ang] = eci2oe(r,v)
     
     % Earth gravitational parameter [m^3/s^2]
-    mu_earth = 398600.4415e9;
+    mu = MU_EARTH;
     
     % specific angular momentum [m^2/s]
     h = cross(r,v);
     
     % stores vector magnitudes
-    r_mag = norm(r);
-    v_mag = norm(v);
-    h_mag = norm(h);
+    r_mag = inorm(r);
+    v_mag = inorm(v);
+    h_mag = inorm(h);
     
     % stores dot product between position and velocity [m^2/s]
     r_dot_v = idot(r,v);
         
     % eccentricity vector and its magnitude
-    e_vec = (v_mag^2/mu_earth-1/r_mag)*r-(r_dot_v/mu_earth)*v;
-    e = norm(e_vec);
+    e_vec = (v_mag^2/mu-1/r_mag)*r-(r_dot_v/mu)*v;
+    e = inorm(e_vec);
     
     % node vector and its magnitude
     n = cross([0;0;1],h);
-    n_mag = norm(n);
+    n_mag = inorm(n);
     
     % stores components of vectors needed later
     eI = e_vec(1);
@@ -67,13 +69,13 @@ function [a,e,i,Om,w,nu,ang] = eci2oe(r,v)
     rK = r(3);
     
     % specific mechanical energy [m^2/s^2]
-    Em = v_mag^2/2-mu_earth/r_mag;
+    Em = v_mag^2/2-mu/r_mag;
 
     % semi-major axis [m]
     if e == 1
         a = inf;
     else
-        a = -mu_earth/(2*Em);
+        a = -mu/(2*Em);
     end
 
     % inclination [rad]

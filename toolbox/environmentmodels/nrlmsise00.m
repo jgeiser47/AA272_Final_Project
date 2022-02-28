@@ -2,18 +2,19 @@
 %
 % nrlmsise00  NRLMSISE-00 atmospheric model.
 %
-%   [rho,n,T] = nrlmsise00(r_ecef,MJD_UT1,F107_avg,F107,ap_array,Ap,...
-%       nrlm_data)
+%   [rho,n,T] = nrlmsise00(r_ecef,MJD_UT1,F107_avg,F107,ap_array,nrlm_data)
 %
-% See also exponential, harris_priester, jacchia_roberts, 
-% nrlmsise00_matlab.
+% See also exponential, harris_priester, jacchia_bowman_2008, 
+% jacchia_roberts, load_nrlm_data, nrlmsise00_matlab, space_weather.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-15
+% Last Update: 2022-02-19
 %
 % REFERENCES:
-%   [1] https://www.mathworks.com/matlabcentral/fileexchange/56253-nrlmsise-00-atmosphere-model?s_tid=srchtitle
-%   [2] nrlmsise-00.h, nrlmsise-00.c, nrlmsise-00_data.c
+%   [1] Picone et al., "NRLMSISE-00 empirical model of the atmosphere: 
+%       Statistical comparisons and scientific issues"
+%   [2] https://www.mathworks.com/matlabcentral/fileexchange/56253-nrlmsise-00-atmosphere-model?s_tid=srchtitle
+%   [3] nrlmsise-00.h, nrlmsise-00.c, nrlmsise-00_data.c
 %       (https://git.linta.de/?p=~brodo/nrlmsise-00.git;a=summary)
 %
 %--------------------------------------------------------------------------
@@ -21,20 +22,19 @@
 % ------
 % INPUT:
 % ------
-%   r_ecef      - (3×1 double) satellite position resolved in ECEF frame
-%                 [m]
+%   r_ecef      - (3×1 double) position resolved in ECEF frame [m]
 %   MJD_UT1     - (1×1 double) UT1 (Universal Time 1) [MJD]
-%   F107_avg    - (1×1 double) centered 81-day average of F10.7 [SFU]
-%   F107        - (1×1 double) 10.7 cm solar flux for previous day [SFU]
+%   F107_avg    - (1×1 double) centered 81-day average of F10.7 (1-day lag)
+%                 [SFU]
+%   F107        - (1×1 double) daily 10.7 cm solar flux (1-day lag) [SFU]
 %   ap_array    - (1×1 double) array of planetary amplitude values [γ]
-%                   1. daily planetary amplitude [γ]
+%                   1. daily planetary amplitude (current day - no lag) [γ]
 %                   2. planetary amplitude (current time) [γ]
 %                   3. planetary amplitude (3 hours before) [γ]
 %                   4. planetary amplitude (6 hours before) [γ]
 %                   5. planetary amplitude (9 hours before) [γ]
 %                   6. planetary amplitude (avg. of 12-33 hours before) [γ]
 %                   7. planetary amplitude (avg. of 36-57 hours before) [γ]
-%   Ap          - (1×1 double) daily planetary amplitude [γ]
 %   nrlm_data   - (1×1 struct) data for NRLMSISE-00 atmospheric model
 %       • pt    (1×150 double)
 %       • pd    (9×150 double)
@@ -59,12 +59,12 @@
 %       • nO    - (1×1 double) atomic oxygen number density [m^-3]
 %       • nO2   - (1×1 double) diatomic oxygen number density [m^-3]
 %   T           - (1×1 struct) temperatures [K]
-%       • T     - (1×1 double) temperature at altitude [K]
+%       • T_h   - (1×1 double) temperature at altitude [K]
 %       • T_inf - (1×1 double) exospheric temperature [K]
 %
 %==========================================================================
 function [rho,n,T] = nrlmsise00(r_ecef,MJD_UT1,F107_avg,F107,ap_array,...
-    Ap,nrlm_data)
+    nrlm_data)
     
     % ----------------------------------------------------
     % Calculates inputs for NRLMSISE-00 atmospheric model.
@@ -90,6 +90,9 @@ function [rho,n,T] = nrlmsise00(r_ecef,MJD_UT1,F107_avg,F107,ap_array,...
 
     % (approximate) local apparent solar time [h]
     LAST = ss/3600+lon/15;
+
+    % daily planetary amplitude (current day - no lag) [γ]
+    Ap = ap_array(1);
 
     % ------------------------
     % Default switch settings.
@@ -140,7 +143,7 @@ function [rho,n,T] = nrlmsise00(r_ecef,MJD_UT1,F107_avg,F107,ap_array,...
     T_inf = output.t(1,1);
 
     % temperature at altitude [K]
-    Th = output.t(2,1);
+    T_h = output.t(2,1);
 
     % converts number densities to m^-3
     nHe = (1e6)*nHe;
@@ -158,7 +161,7 @@ function [rho,n,T] = nrlmsise00(r_ecef,MJD_UT1,F107_avg,F107,ap_array,...
     % ----------------
 
     % temperatures [K]
-    T.T = Th;
+    T.T_h = T_h;
     T.T_inf = T_inf;
 
     % number densities [m^-3]

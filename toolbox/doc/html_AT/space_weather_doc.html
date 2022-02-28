@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>space_weather</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-15"><meta name="DC.source" content="space_weather_doc.m"><style type="text/css">
+      --><title>space_weather</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-27"><meta name="DC.source" content="space_weather_doc.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +67,8 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1><tt>space_weather</tt></h1><!--introduction--><p>Space weather data for the Jacchia-Roberts and NRLMSISE-00 atmospheric models.</p><p><a href="index.html">Back to Astrodynamics Toolbox Contents</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Input/Output Parameters</a></li><li><a href="#4">See also</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">sw = space_weather(MJD_UT1,Kp_ap_F017)
-</pre><h2 id="2">Description</h2><p><tt>sw = space_weather(MJD_UT1,Kp_ap_F017)</tt> returns a structure <tt>sw</tt> (defined below) storing the space weather parameters needed by the Jacchia-Roberts and NRLMSISE-00 atmospheric models, given the modified Julian date of UT1 (<img src="space_weather_doc_eq11095008563007067201.png" alt="$\mathrm{MJD}_{\mathrm{UT1}}$" style="width:39px;height:10px;">) and an array storing space weather data (<tt>Kp_ap_F107</tt>).</p><h2 id="3">Input/Output Parameters</h2><p>
+  </style></head><body><div class="content"><h1><tt>space_weather</tt></h1><!--introduction--><p>Space weather data for atmospheric models.</p><p><a href="index.html">Back to Astrodynamics Toolbox Contents</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Input/Output Parameters</a></li><li><a href="#4">See also</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">sw = space_weather(MJD_UT1,sw1,sw2,model)
+</pre><h2 id="2">Description</h2><p><tt>sw = space_weather(MJD_UT1,sw1,sw2,model)</tt> returns a structure <tt>sw</tt> (defined below) storing the space weather parameters needed by various atmospheric  models, given the modified Julian date of UT1 (<img src="space_weather_doc_eq11095008563007067201.png" alt="$\mathrm{MJD}_{\mathrm{UT1}}$" style="width:39px;height:10px;">), the arrays <tt>sw1</tt> and <tt>sw2</tt> storing space weather data, and the atmospheric model being used.</p><h2 id="3">Input/Output Parameters</h2><p>
   <table border=1>
       <tr>
           <td></td>
@@ -79,7 +79,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
           <td style="text-align:center"><b>Units</b></td>
       </tr>
       <tr>
-          <td rowspan="2" style="text-align:center"><b>Input</b></td>
+          <td rowspan="4" style="text-align:center"><b>Input</b></td>
           <td style="text-align:center"><TT>MJD_UT1</TT></td>
           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{MJD}_{\mathrm{UT1}}" title="" /></td>
           <td>UT1 (Universal Time 1)</td>
@@ -87,9 +87,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
           <td style="text-align:center">MJD</td>
       </tr>
       <tr>
-          <td style="text-align:center"><TT>Kp_ap_F017</TT></td>
+          <td style="text-align:center"><TT>sw1</TT></td>
           <td style="text-align:center">-</td>
-          <td>array storing space weather data
+          <td>array storing 1st half of space weather data
               <BR> -  Column 1: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{MJD}_{\mathrm{UT1}}" title="" /> -- UT1 (Universal Time 1) [MJD]
               <BR> -  Column 2: <img src="https://latex.codecogs.com/svg.latex?\inline&space;K_{p1}" title="" /> -- planetary index (00:00-03:00)
               <BR> -  Column 3: <img src="https://latex.codecogs.com/svg.latex?\inline&space;K_{p2}" title="" /> -- planetary index (03:00-06:00)
@@ -114,41 +114,69 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
           <td style="text-align:center">-</td>
       </tr>
       <tr>
+          <td style="text-align:center"><TT>sw2</TT></td>
+          <td style="text-align:center">-</td>
+          <td>array storing 2nd half of space weather data
+              <BR> -      Column 1: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{MJD}_{\mathrm{UT1}}" title="" /> -- UT1 (Universal Time 1)[MJD]
+              <BR> -      Column 2: <img src="https://latex.codecogs.com/svg.latex?\inline&space;S_{10.7}" title="" /> -- daily 26-34 nm EUV index [SFU]
+              <BR> -      Column 3: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{S}_{10.7}" title="" /> -- centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;S_{10.7}" title="" /> [SFU]
+              <BR> -      Column 4: <img src="https://latex.codecogs.com/svg.latex?\inline&space;M_{10.7}" title="" /> -- daily Mg II index [SFU]
+              <BR> -      Column 5: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{M}_{10.7}" title="" /> -- centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;M_{10.7}" title="" /> [SFU]
+              <BR> -      Column 6: <img src="https://latex.codecogs.com/svg.latex?\inline&space;Y_{10.7}" title="" /> -- daily solar X-ray and Lyman-α emission mixed index [SFU]
+              <BR> -      Column 7: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{Y}_{10.7}" title="" /> -- centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;Y_{10.7}" title="" /> [SFU]
+              <BR> -  Columns 8-31: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{dTc}" title="" /> -- temperature change derived from Dst index for each hour of the day (column 8 --> 00:00, column 31 --> 23:00) [K]</td>
+          <td style="text-align:center">M×31<BR>double</td>
+          <td style="text-align:center">-</td>
+      </tr>
+      <tr>
+          <td style="text-align:center"><TT>model</TT></td>
+          <td style="text-align:center">-</td>
+          <td>atmospheric model in use ('Exponential', 'Harris-Priester', 'Jacchia-Bowman 2008', 'Jacchia-Roberts', or 'NRLMSISE-00')</td>
+          <td style="text-align:center">char</td>
+          <td style="text-align:center">-</td>
+      </tr>
+      <tr>
           <td rowspan="1" style="text-align:center"><b>Output</b></td>
           <td style="text-align:center"><TT>sw</TT></td>
           <td style="text-align:center">-</td>
           <td>space weather data
-              <BR> - <TT>Ap</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;A_{p}" title="" /> -- daily planetary amplitude [γ])
               <BR> - <TT>ap_array</TT> (1×7 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathbf{a}_{p}" title="" /> -- planetary amplitude array for NRLMSISE-00 atmospheric model [γ])
-                  <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 1. <img src="https://latex.codecogs.com/svg.latex?\inline&space;A_{p}" title="" /> -- daily planetary amplitude
+                  <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 1. <img
+                  src="https://latex.codecogs.com/svg.latex?\inline&space;A_{p}" title="" /> -- daily planetary amplitude (current day - no lag)
                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 2. <img src="https://latex.codecogs.com/svg.latex?\inline&space;a_{p}" title="" /> -- planetary amplitude (current time)
                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 3. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(a_{p})_{3}" title="" /> -- planetary amplitude 3 hours before current time
                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 4. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(a_{p})_{6}" title="" /> -- planetary amplitude 6 hours before current time
                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 5. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(a_{p})_{9}" title="" /> -- planetary amplitude 9 hours before current time
                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 6. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(\bar{a}_{p})_{12\to33}" title="" /> -- average of eight 3-hour <img src="https://latex.codecogs.com/svg.latex?\inline&space;a_{p}" title="" />'s from 12 to 33 hours prior to current time
-                  <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 7. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(\bar{a}_{p})_{36\to57}" title="" /> -- average of eight 3-hour <img src="https://latex.codecogs.com/svg.latex?\inline&space;a_{p}" title="" />'s from 36 to 57 hours prior to current time%
-              <BR> - <TT>F107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;F_{10.7}" title="" /> -- daily 10.7 cm solar flux for previous day [SFU])
-              <BR> - <TT>F107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{F}_{10.7}" title="" /> -- centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;F_{10.7}" title="" /> for previous day [SFU])
-              <BR> - <TT>Kp</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;K_{p}" title="" /> -- planetary index 3 hours before current time)</td>
+                  <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 7. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(\bar{a}_{p})_{36\to57}" title="" /> -- average of eight 3-hour <img src="https://latex.codecogs.com/svg.latex?\inline&space;a_{p}" title="" />'s from 36 to 57 hours prior to current time
+              <BR> - <TT>dTc</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{dTc}" title="" /> -- temperature change derived from Dst for current time [K])
+              <BR> - <TT>F107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;F_{10.7}" title="" /> -- daily 10.7 cm solar flux (1-day lag) [SFU])
+              <BR> - <TT>F107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{F}_{10.7}" title="" /> -- centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;F_{10.7}" title="" /> (1-day lag) [SFU])
+              <BR> - <TT>Kp</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;K_{p}" title="" /> -- planetary index (3-hour lag))
+              <BR> - <TT>M107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;M_{10.7}" title="" /> -- daily Mg II index (2-day lag) [SFU])
+              <BR> - <TT>M107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{M}_{10.7}" title="" /> -- centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;M_{10.7}" title="" /> (2-day lag) [SFU])
+              <BR> - <TT>S107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;S_{10.7}" title="" /> -- daily 26-34 nm EUV index (1-day lag) [SFU])
+              <BR> - <TT>S107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{S}_{10.7}" title="" /> -- centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;S_{10.7}" title="" /> (1-day lag) [SFU])
+              <BR> - <TT>Y107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;Y_{10.7}" title="" /> -- daily solar X-ray and Lyman-α emission mixed index (5-day lag) [SFU])
+              <BR> - <TT>Y107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{Y}_{10.7}" title="" /> -- centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;Y_{10.7}" title="" /> (5-day lag) [SFU])</td>
           <td style="text-align:center">1×1<BR>struct</td>
           <td style="text-align:center">-</td>
       </tr>
   </table>
-</p><h2 id="4">See also</h2><p><a href="load_Kp_ap_F107.html"><tt>load_Kp_ap_F107</tt></a></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+</p><h2 id="4">See also</h2><p><a href="load_sw.html"><tt>load_sw</tt></a></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% |space_weather|
-% Space weather data for the Jacchia-Roberts and NRLMSISE-00 atmospheric 
-% models.
+% Space weather data for atmospheric models.
 % 
 % <index.html Back to Astrodynamics Toolbox Contents>.
 %% Syntax
-%   sw = space_weather(MJD_UT1,Kp_ap_F017)
+%   sw = space_weather(MJD_UT1,sw1,sw2,model)
 %% Description
-% |sw = space_weather(MJD_UT1,Kp_ap_F017)| returns a structure |sw|
-% (defined below) storing the space weather parameters needed by the
-% Jacchia-Roberts and NRLMSISE-00 atmospheric models, given the modified
-% Julian date of UT1 ($\mathrm{MJD}_{\mathrm{UT1}}$) and an array storing
-% space weather data (|Kp_ap_F107|).
+% |sw = space_weather(MJD_UT1,sw1,sw2,model)| returns a structure |sw| 
+% (defined below) storing the space weather parameters needed by various 
+% atmospheric  models, given the modified Julian date of UT1 
+% ($\mathrm{MJD}_{\mathrm{UT1}}$), the arrays |sw1| and |sw2| storing
+% space weather data, and the atmospheric model being used.
 %% Input/Output Parameters
 % <html>
 %   <table border=1>
@@ -161,7 +189,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %           <td style="text-align:center"><b>Units</b></td>
 %       </tr>
 %       <tr>
-%           <td rowspan="2" style="text-align:center"><b>Input</b></td>
+%           <td rowspan="4" style="text-align:center"><b>Input</b></td>
 %           <td style="text-align:center"><TT>MJD_UT1</TT></td>
 %           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{MJD}_{\mathrm{UT1}}" title="" /></td>
 %           <td>UT1 (Universal Time 1)</td>
@@ -169,9 +197,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %           <td style="text-align:center">MJD</td>
 %       </tr>
 %       <tr>
-%           <td style="text-align:center"><TT>Kp_ap_F017</TT></td>
+%           <td style="text-align:center"><TT>sw1</TT></td>
 %           <td style="text-align:center">-</td>
-%           <td>array storing space weather data
+%           <td>array storing 1st half of space weather data
 %               <BR> -  Column 1: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{MJD}_{\mathrm{UT1}}" title="" /> REPLACE_WITH_DASH_DASH UT1 (Universal Time 1) [MJD]
 %               <BR> -  Column 2: <img src="https://latex.codecogs.com/svg.latex?\inline&space;K_{p1}" title="" /> REPLACE_WITH_DASH_DASH planetary index (00:00-03:00)
 %               <BR> -  Column 3: <img src="https://latex.codecogs.com/svg.latex?\inline&space;K_{p2}" title="" /> REPLACE_WITH_DASH_DASH planetary index (03:00-06:00)
@@ -196,28 +224,57 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %           <td style="text-align:center">-</td>
 %       </tr>
 %       <tr>
+%           <td style="text-align:center"><TT>sw2</TT></td>
+%           <td style="text-align:center">-</td>
+%           <td>array storing 2nd half of space weather data
+%               <BR> -      Column 1: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{MJD}_{\mathrm{UT1}}" title="" /> REPLACE_WITH_DASH_DASH UT1 (Universal Time 1)[MJD]
+%               <BR> -      Column 2: <img src="https://latex.codecogs.com/svg.latex?\inline&space;S_{10.7}" title="" /> REPLACE_WITH_DASH_DASH daily 26-34 nm EUV index [SFU]
+%               <BR> -      Column 3: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{S}_{10.7}" title="" /> REPLACE_WITH_DASH_DASH centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;S_{10.7}" title="" /> [SFU]
+%               <BR> -      Column 4: <img src="https://latex.codecogs.com/svg.latex?\inline&space;M_{10.7}" title="" /> REPLACE_WITH_DASH_DASH daily Mg II index [SFU]
+%               <BR> -      Column 5: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{M}_{10.7}" title="" /> REPLACE_WITH_DASH_DASH centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;M_{10.7}" title="" /> [SFU]
+%               <BR> -      Column 6: <img src="https://latex.codecogs.com/svg.latex?\inline&space;Y_{10.7}" title="" /> REPLACE_WITH_DASH_DASH daily solar X-ray and Lyman-α emission mixed index [SFU]
+%               <BR> -      Column 7: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{Y}_{10.7}" title="" /> REPLACE_WITH_DASH_DASH centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;Y_{10.7}" title="" /> [SFU]
+%               <BR> -  Columns 8-31: <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{dTc}" title="" /> REPLACE_WITH_DASH_DASH temperature change derived from Dst index for each hour of the day (column 8 REPLACE_WITH_DASH_DASH> 00:00, column 31 REPLACE_WITH_DASH_DASH> 23:00) [K]</td>
+%           <td style="text-align:center">M×31<BR>double</td>
+%           <td style="text-align:center">-</td>
+%       </tr>
+%       <tr>
+%           <td style="text-align:center"><TT>model</TT></td>
+%           <td style="text-align:center">-</td>
+%           <td>atmospheric model in use ('Exponential', 'Harris-Priester', 'Jacchia-Bowman 2008', 'Jacchia-Roberts', or 'NRLMSISE-00')</td>
+%           <td style="text-align:center">char</td>
+%           <td style="text-align:center">-</td>
+%       </tr>
+%       <tr>
 %           <td rowspan="1" style="text-align:center"><b>Output</b></td>
 %           <td style="text-align:center"><TT>sw</TT></td>
 %           <td style="text-align:center">-</td>
 %           <td>space weather data
-%               <BR> - <TT>Ap</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;A_{p}" title="" /> REPLACE_WITH_DASH_DASH daily planetary amplitude [γ])
 %               <BR> - <TT>ap_array</TT> (1×7 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathbf{a}_{p}" title="" /> REPLACE_WITH_DASH_DASH planetary amplitude array for NRLMSISE-00 atmospheric model [γ])
-%                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 1. <img src="https://latex.codecogs.com/svg.latex?\inline&space;A_{p}" title="" /> REPLACE_WITH_DASH_DASH daily planetary amplitude
+%                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 1. <img
+%                   src="https://latex.codecogs.com/svg.latex?\inline&space;A_{p}" title="" /> REPLACE_WITH_DASH_DASH daily planetary amplitude (current day - no lag)
 %                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 2. <img src="https://latex.codecogs.com/svg.latex?\inline&space;a_{p}" title="" /> REPLACE_WITH_DASH_DASH planetary amplitude (current time)
 %                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 3. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(a_{p})_{3}" title="" /> REPLACE_WITH_DASH_DASH planetary amplitude 3 hours before current time
 %                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 4. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(a_{p})_{6}" title="" /> REPLACE_WITH_DASH_DASH planetary amplitude 6 hours before current time
 %                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 5. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(a_{p})_{9}" title="" /> REPLACE_WITH_DASH_DASH planetary amplitude 9 hours before current time
 %                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 6. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(\bar{a}_{p})_{12\to33}" title="" /> REPLACE_WITH_DASH_DASH average of eight 3-hour <img src="https://latex.codecogs.com/svg.latex?\inline&space;a_{p}" title="" />'s from 12 to 33 hours prior to current time
-%                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 7. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(\bar{a}_{p})_{36\to57}" title="" /> REPLACE_WITH_DASH_DASH average of eight 3-hour <img src="https://latex.codecogs.com/svg.latex?\inline&space;a_{p}" title="" />'s from 36 to 57 hours prior to current time%
-%               <BR> - <TT>F107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;F_{10.7}" title="" /> REPLACE_WITH_DASH_DASH daily 10.7 cm solar flux for previous day [SFU])
-%               <BR> - <TT>F107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{F}_{10.7}" title="" /> REPLACE_WITH_DASH_DASH centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;F_{10.7}" title="" /> for previous day [SFU])
-%               <BR> - <TT>Kp</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;K_{p}" title="" /> REPLACE_WITH_DASH_DASH planetary index 3 hours before current time)</td>
+%                   <BR> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- 7. <img src="https://latex.codecogs.com/svg.latex?\inline&space;(\bar{a}_{p})_{36\to57}" title="" /> REPLACE_WITH_DASH_DASH average of eight 3-hour <img src="https://latex.codecogs.com/svg.latex?\inline&space;a_{p}" title="" />'s from 36 to 57 hours prior to current time
+%               <BR> - <TT>dTc</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\mathrm{dTc}" title="" /> REPLACE_WITH_DASH_DASH temperature change derived from Dst for current time [K])
+%               <BR> - <TT>F107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;F_{10.7}" title="" /> REPLACE_WITH_DASH_DASH daily 10.7 cm solar flux (1-day lag) [SFU])
+%               <BR> - <TT>F107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{F}_{10.7}" title="" /> REPLACE_WITH_DASH_DASH centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;F_{10.7}" title="" /> (1-day lag) [SFU])
+%               <BR> - <TT>Kp</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;K_{p}" title="" /> REPLACE_WITH_DASH_DASH planetary index (3-hour lag))
+%               <BR> - <TT>M107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;M_{10.7}" title="" /> REPLACE_WITH_DASH_DASH daily Mg II index (2-day lag) [SFU])
+%               <BR> - <TT>M107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{M}_{10.7}" title="" /> REPLACE_WITH_DASH_DASH centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;M_{10.7}" title="" /> (2-day lag) [SFU])
+%               <BR> - <TT>S107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;S_{10.7}" title="" /> REPLACE_WITH_DASH_DASH daily 26-34 nm EUV index (1-day lag) [SFU])
+%               <BR> - <TT>S107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{S}_{10.7}" title="" /> REPLACE_WITH_DASH_DASH centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;S_{10.7}" title="" /> (1-day lag) [SFU])
+%               <BR> - <TT>Y107</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;Y_{10.7}" title="" /> REPLACE_WITH_DASH_DASH daily solar X-ray and Lyman-α emission mixed index (5-day lag) [SFU])
+%               <BR> - <TT>Y107_avg</TT> (1×1 double, <img src="https://latex.codecogs.com/svg.latex?\inline&space;\bar{Y}_{10.7}" title="" /> REPLACE_WITH_DASH_DASH centered 81-day average of <img src="https://latex.codecogs.com/svg.latex?\inline&space;Y_{10.7}" title="" /> (5-day lag) [SFU])</td>
 %           <td style="text-align:center">1×1<BR>struct</td>
 %           <td style="text-align:center">-</td>
 %       </tr>
 %   </table>
 % </html>
 %% See also
-% <load_Kp_ap_F107.html |load_Kp_ap_F107|>
+% <load_sw.html |load_sw|>
 ##### SOURCE END #####
 --></body></html>

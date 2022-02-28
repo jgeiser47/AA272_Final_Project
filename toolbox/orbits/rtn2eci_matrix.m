@@ -5,8 +5,10 @@
 %
 %   R_rtn2eci = rtn2eci_matrix(r_eci,v_eci)
 %
+% See also eci2rtn_matrix.
+%
 % Author: Tamas Kis
-% Last Update: 2022-01-06
+% Last Update: 2022-02-16
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.

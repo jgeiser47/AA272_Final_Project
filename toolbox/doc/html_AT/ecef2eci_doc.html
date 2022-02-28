@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ecef2eci</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-15"><meta name="DC.source" content="ecef2eci_doc.m"><style type="text/css">
+      --><title>ecef2eci</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-02-27"><meta name="DC.source" content="ecef2eci_doc.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1><tt>ecef2eci</tt></h1><!--introduction--><p>ECI position and velocity from ECEF position and velocity.</p><p><a href="index.html">Back to Astrodynamics Toolbox Contents</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Input/Output Parameters</a></li><li><a href="#4">Note</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">[r_eci,v_eci] = ecef2eci(r_ecef,v_ecef,w_eci,R_ecef2eci)
+  </style></head><body><div class="content"><h1><tt>ecef2eci</tt></h1><!--introduction--><p>ECI position and velocity from ECEF position and velocity.</p><p><a href="index.html">Back to Astrodynamics Toolbox Contents</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Input/Output Parameters</a></li><li><a href="#4">Note</a></li><li><a href="#5">See also</a></li></ul></div><h2 id="1">Syntax</h2><pre class="language-matlab">[r_eci,v_eci] = ecef2eci(r_ecef,v_ecef,w_eci,R_ecef2eci)
 </pre><h2 id="2">Description</h2><p><tt>[r_eci,v_eci] = ecef2eci(r_ecef,v_ecef,w_eci,R_ecef2eci)</tt> determines the ECI position and velocity (<img src="ecef2eci_doc_eq12956213191610695038.png" alt="$[\mathbf{r}]_{\mathrm{ECI}}$" style="width:24px;height:11px;"> and <img src="ecef2eci_doc_eq06133646864746399724.png" alt="$[\mathbf{v}]_{\mathrm{ECI}}$" style="width:26px;height:11px;">), given the ECEF position and velocity (<img src="ecef2eci_doc_eq08632949360693803085.png" alt="$[\mathbf{r}]_{\mathrm{ECEF}}$" style="width:31px;height:11px;"> and <img src="ecef2eci_doc_eq04343149359230806616.png" alt="$[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathrm{ECEF}}$" style="width:54px;height:13px;">), the angular velocity of the Earth (<img src="ecef2eci_doc_eq05223616388231296626.png" alt="$[\vec{\omega}]_{\mathrm{ECI}}$" style="width:26px;height:11px;">), and the rotation matrix from the ECEF frame to the ECI frame (<img src="ecef2eci_doc_eq14728827196602983985.png" alt="$[\mathbf{R}_{\mathrm{ECEF}\to\mathrm{ECI}}]$" style="width:56px;height:11px;">).</p><h2 id="3">Input/Output Parameters</h2><p>
   <table border=1>
       <tr>
@@ -81,28 +81,28 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
       <tr>
           <td rowspan="4" style="text-align:center"><b>Input</b></td>
           <td style="text-align:center"><TT>r_ecef</TT></td>
-          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{r}]_{\mathrm{ecef}}" title="" /></td>
+          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{r}]_{\mathrm{ECEF}}" title="" /></td>
           <td>position resolved in ECEF frame</td>
           <td style="text-align:center">3×1<BR>double</td>
           <td style="text-align:center">any</td>
       </tr>
       <tr>
           <td style="text-align:center"><TT>v_ecef</TT></td>
-          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[{}^{\mathrm{ecef}}\mathbf{v}]_{\mathrm{ecef}}" title="" /></td>
+          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathrm{ECEF}}" title="" /></td>
           <td>ECEF velocity resolved in ECEF frame</td>
           <td style="text-align:center">3×1<BR>double</td>
           <td style="text-align:center">any</td>
       </tr>
       <tr>
           <td style="text-align:center"><TT>w_eci</TT></td>
-          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\boldsymbol{\omega}_{\oplus}]_{\mathrm{eci}}" title="" /></td>
+          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\boldsymbol{\omega}_{\oplus}]_{\mathrm{ECI}}" title="" /></td>
           <td>Earth angular velocity resolved in ECI frame</td>
           <td style="text-align:center">3×1<BR>double</td>
           <td style="text-align:center">rad/s</td>
       </tr>
       <tr>
           <td style="text-align:center"><TT>R_ecef2eci</TT></td>
-          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{R}_{\mathrm{ecef}\rightarrow\mathrm{eci}}]" title="" /></td>
+          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{R}_{\mathrm{ECEF}\rightarrow\mathrm{ECI}}]" title="" /></td>
           <td>rotation matrix from ECEF frame to ECI frame</td>
           <td style="text-align:center">3×3<BR>double</td>
           <td style="text-align:center">-</td>
@@ -110,20 +110,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
       <tr>
           <td rowspan="2" style="text-align:center"><b>Output</b></td>
           <td style="text-align:center"><TT>r_eci</TT></td>
-          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{r}]_{\mathrm{eci}}" title="" /></td>
+          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{r}]_{\mathrm{ECI}}" title="" /></td>
           <td>position resolved in ECI frame</td>
           <td style="text-align:center">3×1<BR>double</td>
-          <td style="text-align:center">any</td>
+          <td style="text-align:center">same as <TT>r_ecef</TT></td>
       </tr>
       <tr>
           <td style="text-align:center"><TT>v_eci</TT></td>
-          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{v}]_{\mathrm{eci}}" title="" /></td>
+          <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{v}]_{\mathrm{ECI}}" title="" /></td>
           <td>inertial velocity resolved in ECI frame</td>
           <td style="text-align:center">3×1<BR>double</td>
-          <td style="text-align:center">any</td>
+          <td style="text-align:center">same as <TT>v_ecef</TT></td>
       </tr>
   </table>
-</p><h2 id="4">Note</h2><div><ul><li><img src="ecef2eci_doc_eq01029343960959927232.png" alt="$[\mathbf{r}]_{\mathrm{eci}}$" style="width:19px;height:11px;"> and <img src="ecef2eci_doc_eq02268632859948898457.png" alt="$[\mathbf{v}]_{\mathrm{eci}}$" style="width:21px;height:11px;"> can be input in any units, but they MUST be consistent. <img src="ecef2eci_doc_eq04156206782606217854.png" alt="$[\mathbf{r}]_{\mathrm{ecef}}$" style="width:24px;height:11px;"> and <img src="ecef2eci_doc_eq09888653982713766149.png" alt="$[{}^{\mathrm{ecef}}\mathbf{v}]_{\mathrm{ecef}}$" style="width:39px;height:13px;"> will be output in the same units.</li><li>By definition, the angular velocity of the Earth is defined as the angular velocity of the ECEF frame with respect to the ECI frame.</li></ul></div><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+</p><h2 id="4">Note</h2><div><ul><li><img src="ecef2eci_doc_eq08632949360693803085.png" alt="$[\mathbf{r}]_{\mathrm{ECEF}}$" style="width:31px;height:11px;"> and <img src="ecef2eci_doc_eq04343149359230806616.png" alt="$[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathrm{ECEF}}$" style="width:54px;height:13px;"> can be input in any units, but they <i>must</i> be consistent. The units of <img src="ecef2eci_doc_eq12956213191610695038.png" alt="$[\mathbf{r}]_{\mathrm{ECI}}$" style="width:24px;height:11px;"> will match those of <img src="ecef2eci_doc_eq08632949360693803085.png" alt="$[\mathbf{r}]_{\mathrm{ECEF}}$" style="width:31px;height:11px;">, and the units of <img src="ecef2eci_doc_eq16726481997250671805.png" alt="$\mathbf{v}]_{\mathrm{ECI}}$" style="width:24px;height:11px;"> will match those of <img src="ecef2eci_doc_eq04343149359230806616.png" alt="$[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathrm{ECEF}}$" style="width:54px;height:13px;">.</li><li>By definition, the angular velocity of the Earth is defined as the angular velocity of the ECEF frame with respect to the ECI frame.</li></ul></div><h2 id="5">See also</h2><p><a href="eci2ecef_doc.html"><tt>eci2ecef_doc</tt></a></p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% |ecef2eci|
 % ECI position and velocity from ECEF position and velocity.
@@ -154,28 +154,28 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %       <tr>
 %           <td rowspan="4" style="text-align:center"><b>Input</b></td>
 %           <td style="text-align:center"><TT>r_ecef</TT></td>
-%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{r}]_{\mathrm{ecef}}" title="" /></td>
+%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{r}]_{\mathrm{ECEF}}" title="" /></td>
 %           <td>position resolved in ECEF frame</td>
 %           <td style="text-align:center">3×1<BR>double</td>
 %           <td style="text-align:center">any</td>
 %       </tr>
 %       <tr>
 %           <td style="text-align:center"><TT>v_ecef</TT></td>
-%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[{}^{\mathrm{ecef}}\mathbf{v}]_{\mathrm{ecef}}" title="" /></td>
+%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathrm{ECEF}}" title="" /></td>
 %           <td>ECEF velocity resolved in ECEF frame</td>
 %           <td style="text-align:center">3×1<BR>double</td>
 %           <td style="text-align:center">any</td>
 %       </tr>
 %       <tr>
 %           <td style="text-align:center"><TT>w_eci</TT></td>
-%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\boldsymbol{\omega}_{\oplus}]_{\mathrm{eci}}" title="" /></td>
+%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\boldsymbol{\omega}_{\oplus}]_{\mathrm{ECI}}" title="" /></td>
 %           <td>Earth angular velocity resolved in ECI frame</td>
 %           <td style="text-align:center">3×1<BR>double</td>
 %           <td style="text-align:center">rad/s</td>
 %       </tr>
 %       <tr>
 %           <td style="text-align:center"><TT>R_ecef2eci</TT></td>
-%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{R}_{\mathrm{ecef}\rightarrow\mathrm{eci}}]" title="" /></td>
+%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{R}_{\mathrm{ECEF}\rightarrow\mathrm{ECI}}]" title="" /></td>
 %           <td>rotation matrix from ECEF frame to ECI frame</td>
 %           <td style="text-align:center">3×3<BR>double</td>
 %           <td style="text-align:center">-</td>
@@ -183,28 +183,32 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %       <tr>
 %           <td rowspan="2" style="text-align:center"><b>Output</b></td>
 %           <td style="text-align:center"><TT>r_eci</TT></td>
-%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{r}]_{\mathrm{eci}}" title="" /></td>
+%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{r}]_{\mathrm{ECI}}" title="" /></td>
 %           <td>position resolved in ECI frame</td>
 %           <td style="text-align:center">3×1<BR>double</td>
-%           <td style="text-align:center">any</td>
+%           <td style="text-align:center">same as <TT>r_ecef</TT></td>
 %       </tr>
 %       <tr>
 %           <td style="text-align:center"><TT>v_eci</TT></td>
-%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{v}]_{\mathrm{eci}}" title="" /></td>
+%           <td style="text-align:center"><img src="https://latex.codecogs.com/svg.latex?\inline&space;[\mathbf{v}]_{\mathrm{ECI}}" title="" /></td>
 %           <td>inertial velocity resolved in ECI frame</td>
 %           <td style="text-align:center">3×1<BR>double</td>
-%           <td style="text-align:center">any</td>
+%           <td style="text-align:center">same as <TT>v_ecef</TT></td>
 %       </tr>
 %   </table>
 % </html>
 %% Note
 %
-% * $[\mathbf{r}]_{\mathrm{eci}}$ and $[\mathbf{v}]_{\mathrm{eci}}$ can be
-% input in any units, but they MUST be consistent. 
-% $[\mathbf{r}]_{\mathrm{ecef}}$ and 
-% $[{}^{\mathrm{ecef}}\mathbf{v}]_{\mathrm{ecef}}$ will be output in the 
-% same units.
+% * $[\mathbf{r}]_{\mathrm{ECEF}}$ and 
+% $[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathrm{ECEF}}$ can be input in any 
+% units, but they _must_ be consistent. The units of 
+% $[\mathbf{r}]_{\mathrm{ECI}}$ will match those of 
+% $[\mathbf{r}]_{\mathrm{ECEF}}$, and the units of
+% $\mathbf{v}]_{\mathrm{ECI}}$ will match those of 
+% $[{}^{\mathrm{ECEF}}\mathbf{v}]_{\mathrm{ECEF}}$.
 % * By definition, the angular velocity of the Earth is defined as the
 % angular velocity of the ECEF frame with respect to the ECI frame.
+%% See also
+% <eci2ecef_doc.html |eci2ecef_doc|>
 ##### SOURCE END #####
 --></body></html>

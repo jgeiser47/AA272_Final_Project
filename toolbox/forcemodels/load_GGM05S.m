@@ -6,7 +6,7 @@
 %   GGM05S = load_GGM05S(N)
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-15
+% Last Update: 2022-02-21
 %
 %--------------------------------------------------------------------------
 %
@@ -30,7 +30,7 @@ function GGM05S = load_GGM05S(N)
     GGM05S = struct2array(load('GGM05S.mat'));
 
     % defaults N to maximum possible value if not input
-    if nargin == 0
+    if (nargin == 0) || isempty(N)
         N = size(GGM05S.C_norm,1)-1;
     end
 

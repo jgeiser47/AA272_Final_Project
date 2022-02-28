@@ -4,8 +4,10 @@
 %
 %   epsilon = obliquity(MJD_TT)
 %
+% See also eclipse, moon_position, sun_position.
+%
 % Author: Tamas Kis
-% Last Update: 2022-01-24
+% Last Update: 2022-02-20
 %
 % REFERENCES:
 %   [1] Vallado, "Fundamentals of Astrodynamics and Applications", 4th Ed.,

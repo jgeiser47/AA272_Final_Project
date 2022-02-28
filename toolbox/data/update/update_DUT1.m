@@ -4,7 +4,7 @@
 % Updates ΔUT1 data.
 %
 % Author: Tamas Kis
-% Last Update: 2022-02-15
+% Last Update: 2022-02-19
 %
 % ----------------------
 % Generated data format.
@@ -21,7 +21,7 @@
 % ----------------
 %
 % The raw data is formatted as in the following link:
-% https://datacenter.iers.org/data/html/finals2000A.data.html
+%   https://datacenter.iers.org/data/html/finals2000A.data.html
 %
 % The relevant data that we want is stored in the following columns:
 %    1. MJD  - modified Julian date [MJD]
