@@ -42,6 +42,7 @@ C_LIGHT = 299792458.0; % [m/s]
 % Azimuth and Elevation of GNSS sat with respect to user
 rho_enu = ecef2enu(r_sat,r_rcv);
 [A,E,~] = enu2aer(rho_enu);
+A = deg2rad(A); E = deg2rad(E);
 
 [LONu,LATu,~] = ecef2geod(r_rcv);
 LONu = deg2rad(LONu); LATu = deg2rad(LATu);
