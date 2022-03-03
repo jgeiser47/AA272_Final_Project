@@ -65,12 +65,10 @@ classdef GPS_Constellation < handle
                 % Get ionosphere stuff
                 af1 = ephem.SVclockDrift;
                 L1freq = 1575.42e6;
-                %t_rcv = tx_time - floor(tx_time/(86400*7))*86400*7;
-                t_rcv = GNSStime(tx_time); 
+                t_rcv = tx_time - floor(tx_time/(86400*7))*86400*7;
                 constant_coeffs = 1;
                 Klobuchar = get_Klobuchar_coeffs(ephem, tx_time, constant_coeffs);
-                %I = GNSSionosphere(t_rcv,ecef_rcv,ecef_sat,Klobuchar(1,:),Klobuchar(2,:));
-                I = s3_GNSSionosphere(t_rcv,ecef_rcv,ecef_sat,Klobuchar(1,:),Klobuchar(2,:));
+                I = GNSSionosphere(t_rcv,ecef_rcv,ecef_sat,Klobuchar(1,:),Klobuchar(2,:));
                 
                 % Calculate pseudorange 
                 pseudoranges(ii) = norm(ecef_sat-ecef_rcv) + (bias_rcv-bias_sat) + I;
