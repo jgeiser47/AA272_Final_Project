@@ -38,6 +38,8 @@ classdef GPS_Constellation < handle
         % Inputs: MJD - (scalar) one timestep of 'simdata.MJD_GPS'
         %         ecef_rcv - (3x1) one timestep of 'simdata.r_ecef'
         %         bias_rcv - (scalar) current estimated receiver clock bias [meters]
+        %         NOISE_FLAG - (0 or 1) Add noise to measurements (1) OR
+        %                               return exact measurements (0)
         %
         % Outputs: pseudoranges - 4x1 vector of pseudorange values from 4 closest GPS sats
         %          GPS_XYZB - 4x4 matrix containing ECEF position and clock
@@ -45,7 +47,7 @@ classdef GPS_Constellation < handle
         %                     row is a separate satellite, i.e.
         %                     GPS_XYZB(1,:) returns X, Y, Z, and clock bias
         %                     for the closest GPS satellite
-        function [pseudoranges, GPS_XYZB] = get_pseudoranges(obj, MJD, ecef_rcv, bias_rcv)
+        function [pseudoranges, GPS_XYZB] = get_pseudoranges(obj, MJD, ecef_rcv, bias_rcv, NOISE_FLAG)
             % C_LIGHT = 299792458.0;
             ind_timestep = find(MJD == obj.GPS_MJDs);
             tx_time = obj.GPS_times(ind_timestep, 2);
@@ -63,9 +65,11 @@ classdef GPS_Constellation < handle
                 % Get ionosphere stuff
                 af1 = ephem.SVclockDrift;
                 L1freq = 1575.42e6;
-                t_rcv = GNSStime(tx_time);
+                %t_rcv = tx_time - floor(tx_time/(86400*7))*86400*7;
+                t_rcv = GNSStime(tx_time); 
                 constant_coeffs = 1;
                 Klobuchar = get_Klobuchar_coeffs(ephem, tx_time, constant_coeffs);
+                %I = GNSSionosphere(t_rcv,ecef_rcv,ecef_sat,Klobuchar(1,:),Klobuchar(2,:));
                 I = s3_GNSSionosphere(t_rcv,ecef_rcv,ecef_sat,Klobuchar(1,:),Klobuchar(2,:));
                 
                 % Calculate pseudorange 
@@ -73,6 +77,12 @@ classdef GPS_Constellation < handle
                 
                 % Also output output GPS sat's ECEF position and clock bias
                 GPS_XYZB(ii,:) = [ecef_sat', bias_sat];
+            end
+            
+            % If NOISE_FLAG set, add 0-mean Gaussian noise to measurements
+            if (NOISE_FLAG == 1) 
+                std_dev = 0.5;
+                pseudoranges = pseudoranges + normrnd(0, std_dev, 4, 1);
             end
         end
         
