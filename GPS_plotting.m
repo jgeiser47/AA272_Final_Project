@@ -15,11 +15,13 @@ end
 plot3(simdata.r_ecef(1,:), simdata.r_ecef(2,:), simdata.r_ecef(3,:), 'r', 'LineWidth', 2);
 
 % Earth ellipsoid
-rE = 6378.137 * 1000;
-[xE, yE, zE] = ellipsoid (0, 0, 0, rE, rE, rE, 20);
-s = surf(xE, yE, zE);
-s.FaceColor = 'b';
-s.EdgeColor = 'k';
+% rE = 6378.137 * 1000;
+% [xE, yE, zE] = ellipsoid (0, 0, 0, rE, rE, rE, 20);
+% s = surf(xE, yE, zE);
+% s.FaceColor = 'b';
+% s.EdgeColor = 'k';
+[XE, YE, ZE] = earth_sphere(50, 'm');
+plot_earth_sphere(XE,YE,ZE,0);
 
 % Plot labeling
 view(3); axis equal;
@@ -36,11 +38,13 @@ end
 plot3(simdata.r_eci(1,:), simdata.r_eci(2,:), simdata.r_eci(3,:), 'r', 'LineWidth', 2);
 
 % Earth ellipsoid
-rE = 6378.137 * 1000;
-[xE, yE, zE] = ellipsoid (0, 0, 0, rE, rE, rE, 20);
-s = surf(xE, yE, zE);
-s.FaceColor = 'b';
-s.EdgeColor = 'k';
+% rE = 6378.137 * 1000;
+% [xE, yE, zE] = ellipsoid (0, 0, 0, rE, rE, rE, 20);
+% s = surf(xE, yE, zE);
+% s.FaceColor = 'b';
+% s.EdgeColor = 'k';
+[XE, YE, ZE] = earth_sphere(50, 'm');
+plot_earth_sphere(XE,YE,ZE,0);
 
 % Plot labeling
 view(3); axis equal;
@@ -48,6 +52,9 @@ xlabel('X [m]'); ylabel('Y [m]'); zlabel('Z [m]');
 title('ECI Positions of Spacecraft and GPS Satellites');
 
 %% Make a GIF for ECEF
+
+EARTH_FLAG = 1; % Set to 1 if we want an Earth sphere, 0 for generic sphere
+SAVE_GIF_FLAG = 1; % Set to 1 if we want to save as GIF, 0 otherwise
 
 % Various figure specifications
 figure(); hold on; grid on; axis equal; %view(3);
@@ -64,9 +71,13 @@ scatter3(0,0,0, 5, 'k', 'filled', 'DisplayName', 'GPS Sat');
 scatter3(0,0,0, 5, 'r', 'filled', 'DisplayName', 'Nearby GPS Sat');
 plot3([0 0.1], [0 0.1], [0 0.1], 'g:', 'DisplayName', 'Received Measurement');
 legend('AutoUpdate', 'off', 'Location', 'Northwest');
-s = surf(xE, yE, zE);
-s.FaceColor = 'b';
-s.EdgeColor = 'k';
+if (EARTH_FLAG)
+    s = plot_earth_sphere(XE,YE,ZE,0);
+else
+    s = surf(xE, yE, zE);
+    s.FaceColor = 'b';
+    s.EdgeColor = 'k';
+end
 
 % Animated line functions
 hs = arrayfun(@(x) animatedline('MaximumNumPoints', 1, 'LineWidth', 5, 'Marker', 'o', 'MarkerFaceColor', 'k'), 1:32);
@@ -94,7 +105,7 @@ for kk = 1:length(GPS.closest4)
     drawnow limitrate
     
     % Set to 1 if we want to save as GIF
-    if 0
+    if SAVE_GIF_FLAG
         % Capture the plot as an image 
         frame = getframe(gcf); 
         im = frame2im(frame); 
@@ -113,6 +124,9 @@ drawnow
 
 %% Make a GIF for ECI
 
+EARTH_FLAG = 1; % Set to 1 if we want an Earth sphere, 0 for generic sphere
+SAVE_GIF_FLAG = 0; % Set to 1 if we want to save as GIF, 0 otherwise
+
 % Various figure specifications
 figure(); hold on; grid on; axis equal; %view(3);
 view(-45, 10);
@@ -128,9 +142,14 @@ scatter3(0,0,0, 5, 'k', 'filled', 'DisplayName', 'GPS Sat');
 scatter3(0,0,0, 5, 'r', 'filled', 'DisplayName', 'Nearby GPS Sat');
 plot3([0 0.1], [0 0.1], [0 0.1], 'g:', 'DisplayName', 'Received Measurement');
 legend('AutoUpdate', 'off', 'Location', 'Northwest');
-s = surf(xE, yE, zE);
-s.FaceColor = 'b';
-s.EdgeColor = 'k';
+if (EARTH_FLAG)
+    s = plot_earth_sphere(XE,YE,ZE,0);
+    rotate(s, [0 0 1], MJD_to_GMST(simdata.MJD_UT1(1)));
+else
+    s = surf(xE, yE, zE);
+    s.FaceColor = 'b';
+    s.EdgeColor = 'k';
+end
 
 % Animated line functions
 hs = arrayfun(@(x) animatedline('MaximumNumPoints', 1, 'LineWidth', 5, 'Marker', 'o', 'MarkerFaceColor', 'k'), 1:32);
@@ -141,6 +160,10 @@ hs2 =  arrayfun(@(x) animatedline('MaximumNumPoints', 2, 'Color', 'g', 'LineStyl
 for kk = 1:length(GPS.closest4)
     
     jj = 1;
+    
+    if (EARTH_FLAG)
+        rotate(s, [0 0 1], 10*(360/86400));
+    end
     
     for ii = 1:32
         if ismember(ii, GPS.closest4(kk,:))
@@ -158,7 +181,7 @@ for kk = 1:length(GPS.closest4)
     drawnow limitrate
     
     % Set to 1 if we want to save as GIF
-    if 0
+    if SAVE_GIF_FLAG
         % Capture the plot as an image 
         frame = getframe(gcf); 
         im = frame2im(frame); 
