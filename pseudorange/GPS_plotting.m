@@ -56,7 +56,7 @@ title('ECI Positions of Spacecraft and GPS Satellites');
 %% Make a GIF for ECEF
 
 EARTH_FLAG = 1; % Set to 1 if we want an Earth sphere, 0 for generic sphere
-SAVE_GIF_FLAG = 1; % Set to 1 if we want to save as GIF, 0 otherwise
+SAVE_GIF_FLAG = 0; % Set to 1 if we want to save as GIF, 0 otherwise
 
 % Various figure specifications
 figure(); hold on; grid on; axis equal; %view(3);
