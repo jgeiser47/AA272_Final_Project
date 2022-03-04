@@ -24,7 +24,8 @@ plot3(simdata.r_ecef(1,:), simdata.r_ecef(2,:), simdata.r_ecef(3,:), 'r', 'LineW
 plot_earth_sphere(XE,YE,ZE,0);
 
 % Plot labeling
-view(3); axis equal;
+%view(3); 
+axis equal; view(-76.5, 2.5); 
 xlabel('X [m]'); ylabel('Y [m]'); zlabel('Z [m]');
 title('ECEF Positions of Spacecraft and GPS Satellites');
 
@@ -47,7 +48,8 @@ plot3(simdata.r_eci(1,:), simdata.r_eci(2,:), simdata.r_eci(3,:), 'r', 'LineWidt
 plot_earth_sphere(XE,YE,ZE,0);
 
 % Plot labeling
-view(3); axis equal;
+%view(3); 
+axis equal; view(-76.5, 2.5); 
 xlabel('X [m]'); ylabel('Y [m]'); zlabel('Z [m]');
 title('ECI Positions of Spacecraft and GPS Satellites');
 
