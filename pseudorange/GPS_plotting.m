@@ -84,15 +84,15 @@ end
 % Animated line functions
 hs = arrayfun(@(x) animatedline('MaximumNumPoints', 1, 'LineWidth', 5, 'Marker', 'o', 'MarkerFaceColor', 'k'), 1:32);
 h = animatedline('Color', 'r', 'LineWidth', 2);
-hs2 =  arrayfun(@(x) animatedline('MaximumNumPoints', 2, 'Color', 'g', 'LineStyle', ':'), 1:4);
+hs2 =  arrayfun(@(x) animatedline('MaximumNumPoints', 2, 'Color', 'g', 'LineStyle', ':'), 1:GPS.N);
 
 % Plot the animation!
-for kk = 1:length(GPS.closest4)
+for kk = 1:length(GPS.closestN)
     
     jj = 1;
     
     for ii = 1:32
-        if ismember(ii, GPS.closest4(kk,:))
+        if ismember(ii, GPS.closestN(kk,:))
             hs(ii).Color = 'r';
             hs(ii).MarkerFaceColor = 'r';
             addpoints(hs2(jj), [GPS.ECEFs(ii,kk,1) simdata.r_ecef(1,kk)], [GPS.ECEFs(ii,kk,2) simdata.r_ecef(2,kk)], [GPS.ECEFs(ii,kk,3) simdata.r_ecef(3,kk)]);
@@ -156,10 +156,10 @@ end
 % Animated line functions
 hs = arrayfun(@(x) animatedline('MaximumNumPoints', 1, 'LineWidth', 5, 'Marker', 'o', 'MarkerFaceColor', 'k'), 1:32);
 h = animatedline('Color', 'r', 'LineWidth', 2);
-hs2 =  arrayfun(@(x) animatedline('MaximumNumPoints', 2, 'Color', 'g', 'LineStyle', ':'), 1:4);
+hs2 =  arrayfun(@(x) animatedline('MaximumNumPoints', 2, 'Color', 'g', 'LineStyle', ':'), 1:GPS.N);
 
 % Plot the animation!
-for kk = 1:length(GPS.closest4)
+for kk = 1:length(GPS.closestN)
     
     jj = 1;
     
@@ -168,7 +168,7 @@ for kk = 1:length(GPS.closest4)
     end
     
     for ii = 1:32
-        if ismember(ii, GPS.closest4(kk,:))
+        if ismember(ii, GPS.closestN(kk,:))
             hs(ii).Color = 'r';
             hs(ii).MarkerFaceColor = 'r';
             addpoints(hs2(jj), [GPS.ECIs(ii,kk,1) simdata.r_eci(1,kk)], [GPS.ECIs(ii,kk,2) simdata.r_eci(2,kk)], [GPS.ECIs(ii,kk,3) simdata.r_eci(3,kk)]);

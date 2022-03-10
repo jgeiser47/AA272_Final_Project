@@ -10,7 +10,8 @@ classdef GPS_Constellation < handle
         GPS_times
         ECEFs
         ECIs
-        closest4
+        N
+        closestN
     end
     
     methods
@@ -27,13 +28,30 @@ classdef GPS_Constellation < handle
             obj.GPS_MJDs = simdata.MJD_GPS;
             obj.GPS_times = obj.get_GPS_times(obj.GPS_MJDs);
             
-            obj.ECEFs = 0 % obj.init_ECEFs();
-            obj.ECIs = 0; % obj.init_ECIs(simdata);
-            obj.closest4 = 0; % obj.init_4_closest(simdata);
+            obj.ECEFs = 0       % obj.init_ECEFs();
+            obj.ECIs = 0;       % obj.init_ECIs(simdata);
+            obj.closestN = 0;   % obj.init_N_closest(simdata);
+            obj.N = 0;          % obj.init_N_closest(simdata);
         end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Get 4 pseudoranges at a specified timestep
+        % Constructor Part 2
+        function init(obj, simdata, varargin)
+            
+            % Default to 4 measurements unless N is specified
+            if (nargin > 2)
+                N = varargin{1};
+            else
+                N = 4;
+            end
+            
+            obj.init_ECEFs();
+            obj.init_ECIs(simdata);
+            obj.init_N_closest(simdata, N);
+        end
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Get N pseudoranges at a specified timestep
         % 
         % Inputs: MJD - (scalar) one timestep of 'simdata.MJD_GPS'
         %         ecef_rcv - (3x1) one timestep of 'simdata.r_ecef'
@@ -41,9 +59,9 @@ classdef GPS_Constellation < handle
         %         NOISE_FLAG - (0 or 1) Add noise to measurements (1) OR
         %                               return exact measurements (0)
         %
-        % Outputs: pseudoranges - 4x1 vector of pseudorange values from 4 closest GPS sats
-        %          GPS_XYZB - 4x4 matrix containing ECEF position and clock
-        %                     biases for each of the 4 GPS satellites. Each
+        % Outputs: pseudoranges - Nx1 vector of pseudorange values from N closest GPS sats
+        %          GPS_XYZB - Nx4 matrix containing ECEF position and clock
+        %                     biases for each of the N GPS satellites. Each
         %                     row is a separate satellite, i.e.
         %                     GPS_XYZB(1,:) returns X, Y, Z, and clock bias
         %                     for the closest GPS satellite
@@ -51,11 +69,11 @@ classdef GPS_Constellation < handle
             % C_LIGHT = 299792458.0;
             ind_timestep = find(MJD == obj.GPS_MJDs);
             tx_time = obj.GPS_times(ind_timestep, 2);
-            SVIDs = obj.closest4(ind_timestep,:);
+            SVIDs = obj.closestN(ind_timestep,:);
                         
-            pseudoranges = zeros(4,1);
-            GPS_XYZB = zeros(4,4);
-            for ii = 1:4
+            pseudoranges = zeros(obj.N,1);
+            GPS_XYZB = zeros(obj.N,4);
+            for ii = 1:obj.N
                 
                 % Get data for current GPS sat at current timestep
                 ephem = obj.eph_data(SVIDs(ii),:);
@@ -80,31 +98,42 @@ classdef GPS_Constellation < handle
             % If NOISE_FLAG set, add 0-mean Gaussian noise to measurements
             if (NOISE_FLAG == 1) 
                 std_dev = 0.5;
-                pseudoranges = pseudoranges + normrnd(0, std_dev, 4, 1);
+                pseudoranges = pseudoranges + normrnd(0, std_dev, obj.N, 1);
             end
         end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Initialize a 2D vector containing SVIDs of 4 closest GPS
         % satellites at each timestep
-        function init_4_closest(obj, simdata)
+        %
+        % Optional input "N" defines number of satellite measurements
+        % (defaults to 4 if not input) 
+        function init_N_closest(obj, simdata, varargin)
             
-            N = length(obj.GPS_times);      % Number of timesteps
+            % Default to 4 measurements unless N is specified
+            if (nargin > 2)
+                N = varargin{1};
+            else
+                N = 4;
+            end
+            
+            K = length(obj.GPS_times);      % Number of timesteps
             M = max(size(obj.eph_data));    % Number of GPS satellites
-            closest4 = zeros(N,4);
+            closestN = zeros(K,N);
             
             r_ecef = simdata.r_ecef;
             
-            for jj = 1:N
+            for jj = 1:K
                 GPS_ECEFs = squeeze(obj.ECEFs(:, jj, 1:3));
                 sc_ECEFs = repmat(r_ecef(:,jj)', 32, 1);
                 
                 ranges = norms(GPS_ECEFs' - sc_ECEFs')';
-                [B, I] = mink(ranges, 4);
+                [B, I] = mink(ranges, N);
                 
-                closest4(jj,:) = I';
+                closestN(jj,:) = I';
             end
-            obj.closest4 = closest4;
+            obj.closestN = closestN;
+            obj.N = N;
         end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
